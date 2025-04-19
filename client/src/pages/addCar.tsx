@@ -31,10 +31,10 @@ const addCarForm = () => {
            return false;
          }
         try {
-            const { data } = await addCar({
+             await addCar({
                 variables: { input: { ...addCarState } },
             });
-            console.log(data);
+            
         } catch (err) {
             console.error(err);
         }

@@ -4,17 +4,28 @@ import { customerPostSchema, type CustomerPostDocument } from "./CustomerPost.js
 import { carSchema, type CarDocument } from "./Car.js";
 
 interface CustomerDocument extends Document {
-  customerId: string;
+  customerId: String;
+  username: String;
+  email: String;
   car: CarDocument[];
   firstName: String;
   lastName: String;
   customerPost: CustomerPostDocument[];
   customerPostCount: Number;
- // favoriteContractor: ContractorId;
+  // favoriteContractor: ContractorId;
 }
 const customerSchema = new Schema<CustomerDocument>({
   customerPost: [customerPostSchema],
   car: [carSchema],
+  username: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    match: [/.+@.+\..+/, "Must use a valid email address"],
+  },
   firstName: {
     type: String,
     required: true,

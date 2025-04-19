@@ -2,7 +2,7 @@ import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useMutation } from '@apollo/client';
-import { ADD_USER } from '../utils/mutations';
+import { ADD_USER, ADD_CONTRACTOR, ADD_CUSTOMER } from '../utils/mutations';
 
 import Auth from '../utils/auth';
 
@@ -18,17 +18,20 @@ const Signup = () => {
 
   const [addUser, { error, data }] = useMutation(ADD_USER);
 
+  const [addContractor] = useMutation(ADD_CONTRACTOR);
+  const [addCustomer] = useMutation(ADD_CUSTOMER);
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, type, value, checked } = event.target;
 
     // If the input type is checkbox, update the isContractor state
-    if (type === "checkbox" && checked) {
+    if (type === "checkbox") {
       setIsChecked(checked);
       setFormState({
         ...formState,
         [name]: checked, 
       });
     } else {
+      
       setFormState({
         ...formState,
         [name]: value,
@@ -42,8 +45,37 @@ const Signup = () => {
       const { data } = await addUser({
         variables: { input: { ...formState } },
       });
-      console.log(formState);
       Auth.login(data.addUser.token);
+      if (data.addUser.user.isContractor === true) {
+        try {
+          const { data: ContractorData } = await addContractor({
+          variables: {
+            input: {
+              email: formState.email,
+              username: formState.username,
+            },
+          },
+        });
+        console.log(ContractorData);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      else {
+        try {
+        const {data: CustomerData } = await addCustomer({
+          variables: {
+            input: {
+              email: formState.email,
+              username: formState.username,
+            },
+          },
+        });
+          console.log(CustomerData)
+        } catch (e) {
+          console.error(e);
+        }
+      }
     } catch (e) {
       console.error(e);
     }
@@ -91,7 +123,7 @@ const Signup = () => {
                   type="checkbox"
                   id="checkIsContractor"
                   name="isContractor"
-                  checked={isChecked} 
+                  checked={isChecked}
                   onChange={handleChange}
                 />
                 <button

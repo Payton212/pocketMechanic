@@ -2,49 +2,55 @@ import { gql } from '@apollo/client';
 
 export const GET_ME = gql`
   query me {
-  me {
-    _id
-    username
-    email
-    isContractor
-    customer {
-      customerId
-      customerPost {
-        customerPostId
-        image
+    me {
+      _id
+      username
+      email
+      password
+      isContractor
+      customer {
+        customerId
+        username
+        email
+        firstName
+        lastName
+        customerPost {
+          customerPostId
+          image
+          description
+          budget
+          firstName
+          lastName
+        }
+        car {
+          carId
+          carYear
+          carMake
+          carModel
+        }
+        customerPostCount
+      }
+      contractor {
+        contractorId
+        email
+        username
+        employees {
+          employeeId
+          image
+          description
+        }
+        contractorPost {
+          contractorPostId
+          description
+          contractorNumber
+          contractorName
+        }
         description
-        budget
+        contractorPostCount
       }
-      car {
-        carId
-        carYear
-        carMake
-        carModel
-      }
-      customerPostCount
-      favoriteContractor
-    }
-    contractor {
-      contractorId
-      employees {
-        employeeId
-        image
-        name
-        description
-      }
-      contractorName
-      contractorPost {
-        contractorPostId
-        description
-        image
-        contractorName
-      }
-      description
-      contractorPostCount
     }
   }
-}
-  `;
+`;
 
 export const GET_CONTRACTOR_POSTS = gql`
 query getContractractorPosts {

@@ -28,8 +28,8 @@ export const ADD_USER = gql`
 export const ADD_CONTRACTOR = gql`
   mutation addContracor($input: addContractor!) {
     addContractor(input: $input) {
-      contractorName
-      description
+      username
+      email
     }
   }
 `;
@@ -37,8 +37,8 @@ export const ADD_CONTRACTOR = gql`
 export const ADD_CUSTOMER = gql`
 mutation addCustomer($input: addCustomer!) {
 addCustomer(input: $input) {
-  firstName
-  lastName
+  username
+  email
   }
 }
 `
@@ -52,14 +52,24 @@ addContractorPost(input: $input) {
 }
 `
 export const ADD_CUSTOMER_POST = gql`
-mutation addCustomerPost($input: addCustomerPost!) {
-addCustomerPost(input: $input) {
-  description
-  image
-  budget
+  mutation addCustomerPost($input: addCustomerPost!) {
+    addCustomerPost(input: $input) {
+      _id
+      username
+      email
+      customer {
+        customerPost {
+          description
+          image
+          firstName
+          lastName
+          budget
+        }
+        customerPostCount
+      }
+    }
   }
-}
-`
+`;
 export const ADD_EMPLOYEE = gql`
 mutation addEmployee($input: addEmployee!) {
 addEmployee(input: $input) {

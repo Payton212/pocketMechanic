@@ -18,41 +18,44 @@ contractor: Contractor
 type Contractor {
 contractorId: ID
 employees: [Employee]
-contractorName: String
+username: String
+email: String
 contractorPost: [ContractorPost]
 description: String
 contractorPostCount: Int
 }
     input addContractor {
-        contractorName: String
-        description: String
+        username: String
+        email: String
     }
 
 type Customer {
+customerId: ID
+username: String
+email: String
 firstName: String
 lastName: String
-customerId: ID
 customerPost: [CustomerPost]
 car: [Car]
 customerPostCount: Int
 }
     input addCustomer {
-        firstName: String
-        lastName: String
+        username: String
+        email: String
     }
 
 type CustomerPost {
 customerPostId: ID
 image: String
 description: String
-budget: Int
+budget: String
 firstName: String
 lastName: String
 }
     input addCustomerPost {
         image: String
         description: String
-        budget: Int
+        budget: String
         firstName: String
         lastName: String
     }
@@ -60,12 +63,12 @@ lastName: String
 type ContractorPost {
 contractorPostId: ID
 description: String
-image: String
+contractorNumber: String
 contractorName: String
 }
     input addContractorPost {
         description: String
-        image: String
+        contractorNumber: String
         contractorName: String
     }
  
@@ -114,9 +117,9 @@ addUser(input: addUser!): Auth
 deleteUser(_id: ID!): User
 addContractor(input: addContractor!): Contractor
 addCustomer(input: addCustomer!): Customer
-addContractorPost(input: addContractorPost!): ContractorPost
+addContractorPost(input: addContractorPost!): User
 deleteContractorPost(contractorPostId: ID!): ContractorPost
-addCustomerPost(input: addCustomerPost!): CustomerPost
+addCustomerPost(input: addCustomerPost!): User
 deleteCustomerPost(customerPostId: ID!): CustomerPost
 addEmployee(input: addEmployee!): Employee
 deleteEmployee(employeeId: ID!): Employee

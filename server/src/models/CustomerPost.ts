@@ -4,7 +4,7 @@ interface CustomerPostDocument extends Document {
   customerPostId: string;
   image: String;
   description: String;
-  budget: Number;
+  budget: String;
 }
 
 const customerPostSchema = new Schema<CustomerPostDocument>({
@@ -14,7 +14,7 @@ const customerPostSchema = new Schema<CustomerPostDocument>({
     },
     image: String,
     budget: {
-        type: Number,
+        type: String,
         required: true,
     },
     customerPostId: {

@@ -41,11 +41,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/addContractorPost",
-        element: <AddContractorPost />,
+        element: <AddContractorPostForm />,
       },
       {
         path: "/addCustomerPost",
-        element: <AddCustomerPost />,
+        element: <AddCustomerPostForm />,
       },
       {
         path: "/addCarForm",
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/addEmployee",
-        element: <AddEmployee />,
+        element: <AddEmployeeForm />,
       },
     ],
   },

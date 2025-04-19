@@ -4,32 +4,41 @@ import { contractorPostSchema, type ContractorPostDocument } from './ContractorP
 import { employeeSchema, type EmployeeDocument } from './Employee.js';
 
 interface ContractorDocument extends Document {
-  contractorId: string;
+  contractorId: String;
   employees: EmployeeDocument[];
-  contractorName: string;
+  username: String;
+  email: String;
+  contractorName: String;
   contractorPost: ContractorPostDocument[];
-  description: string;
+  description: String;
   contractorPostCount: number;
 }
 
-const contractorSchema = new Schema<ContractorDocument>(
-    {
-        contractorPost: [contractorPostSchema],
-        employees: [employeeSchema],
-        contractorName: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
-        contractorId: {
-            type: String,
-            required: true,
-        },
-    }
-);
+const contractorSchema = new Schema<ContractorDocument>({
+  contractorPost: [contractorPostSchema],
+  employees: [employeeSchema],
+  contractorName: {
+    type: String,
+    required: true,
+  },
+  username: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    match: [/.+@.+\..+/, "Must use a valid email address"],
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  contractorId: {
+    type: String,
+    required: true,
+  },
+});
 
 contractorSchema.virtual('contractorPostCount').get(function () {
     return this.contractorPost.length;

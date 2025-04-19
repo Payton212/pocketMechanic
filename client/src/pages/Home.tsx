@@ -10,8 +10,9 @@ import { useParams } from "react-router-dom";
 
 const Home = () => {
   const { username: userParam } = useParams();
-   const { loading, error, data } = useQuery(GET_ME, {
-   });
+  const { loading, data } = useQuery(GET_ME, {
+    variables: { token: Auth.getToken()},
+  });
 const user = data?.me || {};
 
   const { loading: loadingContractor, data: dataContractor } = useQuery(GET_CONTRACTOR_POSTS) ;
@@ -20,7 +21,7 @@ const user = data?.me || {};
   const CustomerPosts = dataCustomer?.customerPosts || [];
 
   const checkUser = () => {
-    console.log(loading, error, data, dataContractor, dataCustomer);
+    console.log(user);
   }
   if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
   if (loading) {
