@@ -1,10 +1,11 @@
 import { Schema, model, type Document } from "mongoose";
 
 interface ContractorPostDocument extends Document {
-  contractorPostId: String;
+  _id: String;
   description: String;
   image: String;
   contractorName: String;
+  contractorNumber: String;
 }
 
 const contractorPostSchema = new Schema<ContractorPostDocument>({
@@ -17,10 +18,10 @@ const contractorPostSchema = new Schema<ContractorPostDocument>({
         type: String,
         required: true,
     },
-    contractorPostId: {
+    contractorNumber: {
         type: String,
         required: true,
-    }
+    },
 });
 const ContractorPost = model("ContractorPost", contractorPostSchema);
 export { type ContractorPostDocument, contractorPostSchema };

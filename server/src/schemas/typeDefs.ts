@@ -16,12 +16,13 @@ contractor: Contractor
     }
 
 type Contractor {
-contractorId: ID
+_id: ID
+firstName: String
+lastName: String
 employees: [Employee]
 username: String
 email: String
 contractorPost: [ContractorPost]
-description: String
 contractorPostCount: Int
 }
     input addContractor {
@@ -32,7 +33,7 @@ contractorPostCount: Int
     }
 
 type Customer {
-customerId: ID
+_id: ID
 username: String
 email: String
 firstName: String
@@ -49,7 +50,7 @@ customerPostCount: Int
     }
 
 type CustomerPost {
-customerPostId: ID
+_id: ID
 image: String
 description: String
 budget: String
@@ -66,25 +67,27 @@ lastName: String
     }
 
 type ContractorPost {
-contractorPostId: ID
+_id: ID
 description: String
 contractorNumber: String
 contractorName: String
 }
     input addContractorPost {
+        contractorId: String
         description: String
         contractorNumber: String
         contractorName: String
     }
  
 type Employee {
-employeeId: ID
+_id: ID
 image: String
 firstName: String
 lastName: String
 description: String
 }
     input addEmployee {
+        contractorId: String
         image: String
         firstName: String
         lastName: String
@@ -92,13 +95,14 @@ description: String
     }
     
 type Car {
-  carId: ID
-  carYear: Int
+  _id: ID
+  carYear: String
   carMake: String
   carModel: String
 }
     input addCar {
-        carYear: Int
+        customerId: String
+        carYear: String
         carMake: String
         carModel: String
     }
@@ -110,7 +114,8 @@ user: User
 
 type Query {
 me: User!
-user(id: ID!): User
+userCustomer(id: ID!): User
+userContractor(id: ID!): User
 contractorPosts: [ContractorPost]!
 customerPosts: [CustomerPost]!
 contractorPost(contractorPostId: ID!): ContractorPost!
@@ -120,16 +125,15 @@ customerPost(customerPostId: ID!): CustomerPost!
 type Mutation {
 login(email: String!, password: String!): Auth
 addUser(input: addUser!): Auth
-deleteUser(_id: ID!): User
 addContractor(input: addContractor!): Contractor
 addCustomer(input: addCustomer!): Customer
 addContractorPost(input: addContractorPost!): User
 deleteContractorPost(contractorPostId: ID!): ContractorPost
 addCustomerPost(input: addCustomerPost!): User
 deleteCustomerPost(customerPostId: ID!): CustomerPost
-addEmployee(input: addEmployee!): Employee
+addEmployee(input: addEmployee!): User
 deleteEmployee(employeeId: ID!): Employee
-addCar(input: addCar!): Car
+addCar(input: addCar!): User
 deleteCar(carId: ID!): Car
 }
 `;

@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "/addContractorPost",
+        path: "/addContractorPost/:userId",
         element: <AddContractorPostForm />,
       },
       {
@@ -48,11 +48,11 @@ const router = createBrowserRouter([
         element: <AddCustomerPostForm />,
       },
       {
-        path: "/addCarForm",
+        path: "/addCarForm/:userId",
         element: <AddCarForm />,
       },
       {
-        path: "/addEmployee",
+        path: "/addEmployee/:userId",
         element: <AddEmployeeForm />,
       },
     ],

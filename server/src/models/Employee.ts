@@ -1,7 +1,7 @@
 import { Schema, model, type Document } from "mongoose";
 
 interface EmployeeDocument extends Document {
-  employeeId: String;
+  _id: String;
   image: String;
   firstName: String;
   lastName: String;
@@ -22,11 +22,7 @@ const employeeSchema = new Schema<EmployeeDocument>({
         required: true,
     },
     image: String,
-    employeeId: {
-        type: String,
-        required: true,
-    },
 });
-const Employee = model("employee", employeeSchema);
+const Employee = model("Employee", employeeSchema);
 export { type EmployeeDocument, employeeSchema };
 export default Employee

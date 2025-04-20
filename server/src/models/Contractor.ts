@@ -1,23 +1,37 @@
 import { Schema, model, type Document } from "mongoose";
 
-import { contractorPostSchema, type ContractorPostDocument } from './ContractorPost.js';
-import { employeeSchema, type EmployeeDocument } from './Employee.js';
+import {  type ContractorPostDocument } from './ContractorPost.js';
+import { type EmployeeDocument } from './Employee.js';
 
 interface ContractorDocument extends Document {
-  contractorId: String;
+  _id: String;
+  firstName: String;
+  lastName: String;
   employees: EmployeeDocument[];
   username: String;
   email: String;
-  contractorName: String;
   contractorPost: ContractorPostDocument[];
-  description: String;
   contractorPostCount: number;
 }
 
 const contractorSchema = new Schema<ContractorDocument>({
-  contractorPost: [contractorPostSchema],
-  employees: [employeeSchema],
-  contractorName: {
+  contractorPost: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "ContractorPost",
+    },
+  ],
+  employees: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Employee",
+    },
+  ],
+  firstName: {
+    type: String,
+    required: true,
+  },
+  lastName: {
     type: String,
     required: true,
   },
@@ -30,19 +44,11 @@ const contractorSchema = new Schema<ContractorDocument>({
     required: true,
     match: [/.+@.+\..+/, "Must use a valid email address"],
   },
-  description: {
-    type: String,
-    required: true,
-  },
-  contractorId: {
-    type: String,
-    required: true,
-  },
 });
 
 contractorSchema.virtual('contractorPostCount').get(function () {
     return this.contractorPost.length;
 });
-const Contractor = model('contractor', contractorSchema);
+const Contractor = model('Contractor', contractorSchema);
 export { type ContractorDocument, contractorSchema };
 export default Contractor

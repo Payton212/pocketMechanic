@@ -17,7 +17,7 @@ const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, titl
     }
     return (
       <div className="cardBody">
-        <h3>{title}</h3>
+        <h3>this is a {title} post</h3>
         {customerPosts &&
           customerPosts.map((customerPost) => (
             <div key={customerPost._id} className="CustomerPostCard">

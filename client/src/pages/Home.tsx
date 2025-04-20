@@ -11,9 +11,9 @@ import { useParams } from "react-router-dom";
 const Home = () => {
   const { username: userParam } = useParams();
   const { loading, data } = useQuery(GET_ME, {
-    variables: { token: Auth.getToken()},
+    variables: { username: userParam },
   });
-const user = data?.me || {};
+  const user = data?.me || {};
 
   const { loading: loadingContractor, data: dataContractor } = useQuery(GET_CONTRACTOR_POSTS) ;
   const  { loading: loadingCustomer, data: dataCustomer } = useQuery(GET_CUSTOMER_POSTS);
@@ -23,40 +23,56 @@ const user = data?.me || {};
   const checkUser = () => {
     console.log(user);
   }
-  if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
-  if (loading) {
-    return <div>Loading...</div>;
-  } else {
-    if (user.isContractor) {
-        <CustomerPostList customerPosts={CustomerPosts} title="Customer" />;
+  if (Auth.loggedIn() && Auth.getProfile().data.username) {
+    if (loading) {
+      return <div>Loading...</div>;
     } else {
-      <ContractorPostList
-        contractorPosts={ContractorPosts}
-        title="Contractor"
-      />;
+      if (user.isContractor === true) {
+        return (
+          <>
+            <button className="button" onClick={checkUser}>
+              check user
+            </button>
+            <CustomerPostList
+              customerPosts={CustomerPosts}
+              title="Customer" />
+          </>
+        );
+        
+      } else if (user.isContractor === false) {
+        return (
+          <>
+            <button className="button"
+              onClick={checkUser}>check user</button>
+            <ContractorPostList
+              contractorPosts={ContractorPosts}
+              title="Contractor"
+            />
+          </>);
       }
-  }
-   } else
+    }
+  } else {
   
-  return (
-    <>
-      {loadingContractor || loadingCustomer ? (
-        <div>Loading...</div>
-      ) : (<div>
+    return (
+      <>
+        {loadingContractor || loadingCustomer ? (
+          <div>Loading...</div>
+        ) : (<div>
           <button className="button"
-          onClick={checkUser}>check user</button>
+            onClick={checkUser}>check user</button>
           <ContractorPostList
             contractorPosts={ContractorPosts}
             title="Contractor"
           />
           <CustomerPostList
-          customerPosts={CustomerPosts}
-          title="Customer"
+            customerPosts={CustomerPosts}
+            title="Customer"
           />
         </div>
-     )}
-    </> 
-  );
+        )}
+      </>
+    );
+  }
 };
 
 export default Home;

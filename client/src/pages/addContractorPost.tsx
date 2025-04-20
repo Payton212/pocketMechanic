@@ -1,17 +1,27 @@
+import { useParams } from "react-router-dom";
 import { useState, type FormEvent, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { ADD_CONTRACTOR_POST } from "../utils/mutations";
+import { GET_CONTRACTOR_ID } from "../utils/queries";
 
 import Auth from "../utils/auth";
 
 const addContractorPostForm = () => {
+    const { userId } = useParams();
   const [ContractorPostForm, setContractorPost] = useState({
     description: "",
-    contractorNumber: "(000) 000-0000",
+    contractorNumber: "",
     contractorName: "",
   });
+
+    const { loading: contractorLoading, data: contractorData } = useQuery(
+      GET_CONTRACTOR_ID,
+      {
+        variables: { userId },
+      }
+    );
 
   const [addContractorPost, { error, data }] = useMutation(ADD_CONTRACTOR_POST);
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -26,16 +36,21 @@ const addContractorPostForm = () => {
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-    if (!token) {
-      return false;
-    }
-    try {
-      await addContractorPost({
-        variables: { input: { ...ContractorPostForm } },
-      });
-    } catch (err) {
-      console.error(err);
+    console.log(contractorData)
+    if (contractorData && contractorData.userContractor && contractorData.userContractor.contractor && !contractorLoading) {
+      const contractorId = contractorData.userContractor.contractor._id;
+      if (!token) {
+        return false;
+      }
+      try {
+        await addContractorPost({
+          variables: { input: { ...ContractorPostForm, contractorId } },
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+          console.error("Contractor data is not available");
     }
   };
 

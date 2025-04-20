@@ -16,7 +16,7 @@ const addCustomerPostForm = () => {
     firstName: "",
     lastName: "",
   });
-  const { data: customerData } = useQuery(GET_CUSTOMER_ID, {
+  const { loading: customerLoading, data: customerData } = useQuery(GET_CUSTOMER_ID, {
     variables: { userId },
   });
  
@@ -33,19 +33,23 @@ const addCustomerPostForm = () => {
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    const customerId = '68046880527a8f5918323a43';
-    if (!token) {
-      return false;
-    }
-    try {
-      await addCustomerPost({
-        variables: {
-          input: { ...CustomerPostForm ,customerId }
-        },
-      });
-    } catch (err) {
-      console.error(err);
-    }
+    if (customerData && customerData.user && customerData.user.customer && !customerLoading) {
+    const customerId = customerData.user.customer._id;
+      if (!token) {
+        return false;
+      }
+      try {
+        await addCustomerPost({
+          variables: {
+            input: { ...CustomerPostForm, customerId }
+          },
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+    console.error("Customer data is not available");
+}
   };
 
   return (

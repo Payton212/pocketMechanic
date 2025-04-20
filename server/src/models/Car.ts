@@ -2,15 +2,14 @@ import { Schema, model, type Document } from "mongoose";
 
 
 interface CarDocument extends Document {
-  carId: string;
-  carYear: number;
+  carYear: string;
   carMake: string;
   carModel: string;
 }
 
 const carSchema = new Schema<CarDocument>({
     carYear: {
-        type: Number,
+        type: String,
         required: true,
     },
     carMake: {
@@ -18,10 +17,6 @@ const carSchema = new Schema<CarDocument>({
         required: true,
     },
     carModel: {
-        type: String,
-        required: true,
-    },
-    carId: {
         type: String,
         required: true,
     },

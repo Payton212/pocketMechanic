@@ -1,7 +1,6 @@
 import { Schema, model, type Document } from "mongoose";
 
 interface CustomerPostDocument extends Document {
-  customerPostId: string;
   image: String;
   description: String;
     budget: String;

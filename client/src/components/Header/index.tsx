@@ -30,7 +30,7 @@ const Header = () => {
                 {/* Retrieving the logged-in user's profile to display the username */}
                 {Auth.getProfile().data.username}'s profile
               </Link>
-              <Link className="btn btn-lg btn-light m-2" to="/addCarForm">
+              <Link className="btn btn-lg btn-light m-2" to={`/addCarForm/${user._id}`}>
                 add car
               </Link>
               <Link className="btn btn-lg btn-light m-2" to={`/addCustomerPost/${user._id}`}>
@@ -52,10 +52,14 @@ const Header = () => {
                 <h1 className="m-0">Pocket Mechanic</h1>
               </Link>
               <p className="m-0">affordable mechanics you can trust</p>
-              <Link className="btn btn-lg btn-info m-2" to="/addContractorPost">
+              <Link className="btn btn-lg btn-info m-2" to="/me">
+                {/* Retrieving the logged-in user's profile to display the username */}
+                {Auth.getProfile().data.username}'s profile
+              </Link>
+              <Link className="btn btn-lg btn-info m-2" to={`/addContractorPost/${user._id}`}>
                 add Post
               </Link>
-              <Link className="btn btn-lg btn-light m-2" to="/addEmployee">
+              <Link className="btn btn-lg btn-light m-2" to={`/addEmployee/${user._id}`}>
                 add Employee
               </Link>
               <button className="btn btn-lg btn-light m-2" onClick={logout}>

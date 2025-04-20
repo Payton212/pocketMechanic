@@ -11,7 +11,7 @@ interface ContractorPostListProps {
 }
 
 const ContractorPostList: React.FC<ContractorPostListProps> = ({ contractorPosts, title }) => {
-  if (!contractorPosts.length) {
+  if (!contractorPosts) {
      return <h3>No contractorPosts</h3>
    }
     return (

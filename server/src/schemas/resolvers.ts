@@ -1,4 +1,4 @@
-import { User, Customer, CustomerPost, ContractorPost } from "../models/index.js";
+import { User, Customer, Car, CustomerPost, ContractorPost, Contractor, Employee } from "../models/index.js";
 import { signToken, AuthenticationError } from '../utils/auth.js'; 
 
 interface AddUserArgs {
@@ -30,9 +30,10 @@ interface ContractorArgs {
   };
 }
 interface CustomerPost {
-  customerPostId: string;
+  _id: string;
 }
 interface CustomerPostArgs {
+  customerId: string;
   input: {
     image: string;
     description: string;
@@ -42,9 +43,10 @@ interface CustomerPostArgs {
   };
 }
 interface ContractorPost {
-    contractorPostId: string;
+    _id: string;
 }
 interface ContractorPostArgs {
+  contractorId: string;
   input: {
     description: string;
     image: string;
@@ -53,19 +55,21 @@ interface ContractorPostArgs {
   }
 }
 interface EmployeeArgs {
+  contractorId: string;
   input: {
     image: string;
     firstName: string;
     lastName: string;
     description: string;
-  }
+  };
 }
 interface Employee {
-    employeeId: string;
+    _id: string;
 }
 interface CarArgs{
+  customerId: string;
     input: {
-        carYear: number;
+        carYear: string;
         carMake: string;
         carModel: string;
     }
@@ -79,25 +83,58 @@ const resolvers = {
       if (!context.user) {
         throw new AuthenticationError("could not authenticate User.");
       }
-
-      return await User.findById({ _id: context.user._id });
+      const myUser = await User.findById({ _id: context.user._id })
+        .populate({
+          path: "customer",
+          populate: [{ path: "car" }, { path: "customerPost" }],
+        })
+        .populate({
+          path: "contractor",
+          populate: [{ path: "employees" }, { path: "contractorPost" }],
+        });
+      return myUser;
     },
-    user: async (_parent: any, { id }: any, context: any) => {
-    if(context.user)
-      try {
-        // Assuming you have a User model defined with Mongoose
-        const user = await User.findById(id).populate('customer');
-        if (!user) {
-          throw new Error('User not found');
+    userCustomer: async (_parent: any, { id }: any, context: any) => {
+      if (context.user) {
+        try {
+          // Assuming you have a User model defined with Mongoose
+          const user = await User.findById(id).populate("customer");
+          if (!user) {
+            throw new Error("User not found");
+          }
+          return user;
+        } catch (error) {
+          console.error(error);
         }
-        return user;
-      } catch (error) {
-        throw new Error('Error fetching user: ' );
+        return console.log(" i am an apple");
+      } else {
+        throw new AuthenticationError("could not authenticate User.");
       }
-      throw new AuthenticationError("could not authenticate User.");
     },
-  
+    userContractor: async (_parent: any, { id }: any, context: any) => {
+      if (context.user) {
+        try {
+          const user = await User.findById(id).populate("contractor");
+          if (!user) {
+            throw new Error("User not found");
+          }
+          return user
+        } catch (error) {
+          console.error(error);
+        }
+        return console.log(" i am an apple");
+      } else {
+        throw new AuthenticationError("could not authenticate User.");
+      }
+    },
+    customerPosts: async () => {
+      return await CustomerPost.find();
+    },
+    contractorPosts: async () => {
+      return await ContractorPost.find();
+    },
   },
+
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
       const user = await User.create({ ...input });
@@ -118,7 +155,7 @@ const resolvers = {
           { _id: user._id },
           { $set: { customer: createCustomer._id } },
           { new: true }
-        );
+        ).populate("customer");
         console.log(createCustomer);
         return createCustomer;
       }
@@ -131,12 +168,14 @@ const resolvers = {
     ) => {
       const user = context.user;
       if (user) {
-        const Contractor = await User.findOneAndUpdate(
+        const addContractor = await Contractor.create({ ...input });
+        console.log(addContractor);
+        await User.findOneAndUpdate(
           { _id: user._id },
-          { $set: { contractor: input } },
+          { $set: { contractor: addContractor._id } },
           { new: true }
-        );
-        return Contractor;
+        ).populate("contractor");
+        return addContractor;
       }
       throw new AuthenticationError("Could not authenticate user.");
     },
@@ -158,29 +197,25 @@ const resolvers = {
     },
     addContractorPost: async (
       _parent: any,
-      { input }: ContractorPostArgs,
+      { input }: {input: ContractorPostArgs},
       context: any
     ) => {
       const user = context.user;
       if (user) {
-        const addContractorPost = await ContractorPost.create({ ...input });
-        await User.findOneAndUpdate(
-          { _id: user._id },
-          {
-            $addToSet: {
-              contractor: { ContractorPost: addContractorPost._id },
-            },
-          },
+        const { contractorId, ...contractorData } = input;
+        const addContractorPost = await ContractorPost.create({ ...contractorData });
+        await Contractor.findOneAndUpdate(
+          { _id: contractorId },
+          { $push: {contractorPost: addContractorPost._id } },
           { new: true }
         );
-
         return addContractorPost;
       }
       throw new AuthenticationError("you need to be logged in");
     },
     deleteContractorPost: async (
       _parent: any,
-      { contractorPostId }: ContractorPost,
+      { _id }: ContractorPost,
       context: any
     ) => {
       const user = context.user;
@@ -190,7 +225,7 @@ const resolvers = {
           {
             $pull: {
               contractor: {
-                contractorPost: { contractorPostId: contractorPostId },
+                contractorPost: { contractorPostId: _id },
               },
             },
           },
@@ -202,16 +237,16 @@ const resolvers = {
     },
     addCustomerPost: async (
       _parent: any,
-      { input }: any,
+      { input }: {input: CustomerPostArgs},
       context: any
     ) => {
       const user = context.user;
       if (user) {
         const { customerId, ...customerData } = input;
         const addCustomerPost = await CustomerPost.create({ ...customerData });
-        await User.findOneAndUpdate(
+        await Customer.findOneAndUpdate(
           { _id: customerId },
-          { $push: { customer: { customerPost: addCustomerPost._id } } },
+          { $push: { customerPost: addCustomerPost._id } },
           { new: true }
         );
         return addCustomerPost;
@@ -220,7 +255,7 @@ const resolvers = {
     },
     deleteCustomerPost: async (
       _parent: any,
-      { customerPostId }: CustomerPost,
+      { _id }: CustomerPost,
       context: any
     ) => {
       const user = context.user;
@@ -229,7 +264,7 @@ const resolvers = {
           { _id: user._id },
           {
             $pull: {
-              customer: { customerPost: { customerPostId: customerPostId } },
+              customer: { customerPost: { customerPostId: _id } },
             },
           },
           { new: true }
@@ -243,27 +278,27 @@ const resolvers = {
       { input }: { input: EmployeeArgs },
       context: any
     ) => {
+      console.log(input);
       const user = context.user;
       if (user) {
-        const addEmployee = await User.findOneAndUpdate(
-          { _id: user._id },
-          { $addToSet: { contractor: { employees: input } } },
+        const { contractorId, ...contractorData } = input;
+        const addEmployee = await Employee.create({ ...contractorData });
+         await Contractor.findOneAndUpdate(
+          { _id: contractorId },
+          { $push: { employees: addEmployee._id } },
           { new: true }
-        );
+         );
+        console.log(addEmployee);
         return addEmployee;
       }
       throw new AuthenticationError("you need to be logged in");
     },
-    deleteEmployee: async (
-      _parent: any,
-      { employeeId }: Employee,
-      context: any
-    ) => {
+    deleteEmployee: async (_parent: any, { _id }: Employee, context: any) => {
       const user = context.user;
       if (user) {
         const deleteEmployee = await User.findOneAndUpdate(
           { _id: user._id },
-          { $pull: { contractor: { employees: { employeeId: employeeId } } } },
+          { $pull: { contractor: { employees: { employeeId: _id } } } },
           { new: true }
         );
         return deleteEmployee;
@@ -275,14 +310,18 @@ const resolvers = {
       { input }: { input: CarArgs },
       context: any
     ) => {
+      console.log(input);
       const user = context.user;
       if (user) {
-        const addCar = await User.findOneAndUpdate(
-          { _id: user._id },
-          { $addToSet: { customer: { car: input } } },
+        const { customerId, ...carData } = input;
+        const createCar = await Car.create({ ...carData });
+        await Customer.findOneAndUpdate(
+          { _id: customerId },
+          { $push: { car: createCar._id } },
           { new: true }
         );
-        return addCar;
+        console.log(createCar);
+        return createCar;
       }
       throw new AuthenticationError("you need to be logged in");
     },

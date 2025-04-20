@@ -44,10 +44,22 @@ addCustomer(input: $input) {
 `
 export const ADD_CONTRACTOR_POST = gql`
 mutation addContractorPost($input: addContractorPost!) {
-addContractorPost(input: $input) {
-  description
-  image
-  contractorName
+  addContractorPost(input: $input) {
+  _id
+  username
+  email
+    contractor{
+      contractorPost {
+        description
+        contractorNumber
+        contractorName
+      }
+        firstName
+        lastName
+        username
+        email
+        contractorPostCount
+    }
   }
 }
 `
@@ -76,23 +88,39 @@ export const ADD_CUSTOMER_POST = gql`
 `;
 export const ADD_EMPLOYEE = gql`
 mutation addEmployee($input: addEmployee!) {
-addEmployee(input: $input) {
-  image
-  firstName
-  lastName
-  description
+  addEmployee(input: $input) {
+    _id
+    username
+    email
+    contractor {
+      employees {
+        image
+        firstName
+        lastName
+        description
+      }
+    }
   }
 }
 `
 export const ADD_CAR = gql`
-mutation addCar($input: addCar!) {
-addCar(input: $input) {
-  carYear
-  carMake
-  carModel
+  mutation addCar($input: addCar!) {
+    addCar(input: $input) {
+      _id
+      username
+      email
+      customer {
+        car {
+          _id
+          carYear
+          carMake
+          carModel
+        
+      }
+    }
   }
 }
-`
+`;
 export const DELETE_CONTRACTOR_POST = gql`
 mutation deleteContractorPost($contractorPostId: ID!) {
   deleteContractorPost(contractorPostId: $contractorPostId){
