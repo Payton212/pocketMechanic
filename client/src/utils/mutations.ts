@@ -65,6 +65,10 @@ export const ADD_CUSTOMER_POST = gql`
           lastName
           budget
         }
+          username
+          email
+          firstName
+          lastName
         customerPostCount
       }
     }

@@ -1,4 +1,4 @@
-import { User, Customer } from '../models/index.js';
+import { User, Customer, CustomerPost, ContractorPost } from "../models/index.js";
 import { signToken, AuthenticationError } from '../utils/auth.js'; 
 
 interface AddUserArgs {
@@ -13,9 +13,15 @@ interface LoginUserArgs {
     password: string;
 }
 interface CustomerArgs{
+  input: {
     username: string;
     email: string;
-  
+    firstName: string;
+    lastName: string;
+  };
+}
+interface CustomerId{
+  customerId: string;
 }
 interface ContractorArgs {
   input: {
@@ -32,8 +38,8 @@ interface CustomerPostArgs {
     description: string;
     budget: string;
     firstName: string;
-    lastName: string
-  }
+    lastName: string;
+  };
 }
 interface ContractorPost {
     contractorPostId: string;
@@ -76,6 +82,21 @@ const resolvers = {
 
       return await User.findById({ _id: context.user._id });
     },
+    user: async (_parent: any, { id }: any, context: any) => {
+    if(context.user)
+      try {
+        // Assuming you have a User model defined with Mongoose
+        const user = await User.findById(id).populate('customer');
+        if (!user) {
+          throw new Error('User not found');
+        }
+        return user;
+      } catch (error) {
+        throw new Error('Error fetching user: ' );
+      }
+      throw new AuthenticationError("could not authenticate User.");
+    },
+  
   },
   Mutation: {
     addUser: async (_parent: any, { input }: AddUserArgs) => {
@@ -85,38 +106,37 @@ const resolvers = {
 
       return { token, user };
     },
-    addCustomer: async (_parent: any, { input }: {input: CustomerArgs}, context: any) => {
+    addCustomer: async (
+      _parent: any,
+      { input }: CustomerArgs,
+      context: any
+    ) => {
       const user = context.user;
       if (user) {
-        const createCustomer = await Customer.create({...input});
-        try {
-          const Customer = await User.findOneAndUpdate(
-            { _id: user._id },
-            { $set: { customer: createCustomer.customerId } },
-            { new: true }
-          );
-          if (!Customer) {
-            console.error("Update failed, no document returned.");
-          } else {
-            console.log("Updated Customer:", Customer);
-            return Customer;
-          }
-        } catch (error) {
-          console.error("Error updating customer:", error);
-        }
-        return createCustomer
+        const createCustomer = await Customer.create({ ...input });
+        await User.findOneAndUpdate(
+          { _id: user._id },
+          { $set: { customer: createCustomer._id } },
+          { new: true }
+        );
+        console.log(createCustomer);
+        return createCustomer;
       }
       throw new AuthenticationError("Could not authenticate user.");
     },
-    addContractor: async (_parent: any, { input }: ContractorArgs, context: any) => {
+    addContractor: async (
+      _parent: any,
+      { input }: ContractorArgs,
+      context: any
+    ) => {
       const user = context.user;
       if (user) {
         const Contractor = await User.findOneAndUpdate(
           { _id: user._id },
           { $set: { contractor: input } },
-          { new: true,}
-        )
-        return Contractor
+          { new: true }
+        );
+        return Contractor;
       }
       throw new AuthenticationError("Could not authenticate user.");
     },
@@ -138,16 +158,22 @@ const resolvers = {
     },
     addContractorPost: async (
       _parent: any,
-      { input }: { input: ContractorPostArgs },
+      { input }: ContractorPostArgs,
       context: any
     ) => {
       const user = context.user;
       if (user) {
-        const addContractorPost = await User.findOneAndUpdate(
+        const addContractorPost = await ContractorPost.create({ ...input });
+        await User.findOneAndUpdate(
           { _id: user._id },
-          { $addToSet: { contractor: { ContractorPost: input } } },
+          {
+            $addToSet: {
+              contractor: { ContractorPost: addContractorPost._id },
+            },
+          },
           { new: true }
         );
+
         return addContractorPost;
       }
       throw new AuthenticationError("you need to be logged in");
@@ -176,15 +202,16 @@ const resolvers = {
     },
     addCustomerPost: async (
       _parent: any,
-      { input }: { input: CustomerPostArgs },
+      { input }: any,
       context: any
     ) => {
       const user = context.user;
-      console.log(user);
       if (user) {
-        const addCustomerPost = await User.findOneAndUpdate(
-          { _id: user._id },
-          { $addToSet: { "customer.customerPosts": input } },
+        const { customerId, ...customerData } = input;
+        const addCustomerPost = await CustomerPost.create({ ...customerData });
+        await User.findOneAndUpdate(
+          { _id: customerId },
+          { $push: { customer: { customerPost: addCustomerPost._id } } },
           { new: true }
         );
         return addCustomerPost;

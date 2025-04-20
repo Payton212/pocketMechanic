@@ -1,6 +1,6 @@
 import { Schema, model, type Document } from "mongoose";
 
-import { customerPostSchema, type CustomerPostDocument } from "./CustomerPost.js";
+import { type CustomerPostDocument } from "./CustomerPost.js";
 import { carSchema, type CarDocument } from "./Car.js";
 
 interface CustomerDocument extends Document {
@@ -15,7 +15,10 @@ interface CustomerDocument extends Document {
   // favoriteContractor: ContractorId;
 }
 const customerSchema = new Schema<CustomerDocument>({
-  customerPost: [customerPostSchema],
+  customerPost: [{
+      type: Schema.Types.ObjectId,
+      ref: "CustomerPost",
+    }],
   car: [carSchema],
   username: {
     type: String,
@@ -28,16 +31,13 @@ const customerSchema = new Schema<CustomerDocument>({
   },
   firstName: {
     type: String,
-    required: true,
+    
   },
   lastName: {
     type: String,
-    required: true,
+    
   },
-  customerId: {
-    type: String,
-    required: true,
-  },
+  
 });
 
 customerSchema.virtual('customerPostCount').get(function () {

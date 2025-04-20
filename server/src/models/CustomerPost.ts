@@ -4,7 +4,9 @@ interface CustomerPostDocument extends Document {
   customerPostId: string;
   image: String;
   description: String;
-  budget: String;
+    budget: String;
+    firstName: String;
+    lastName: String;
 }
 
 const customerPostSchema = new Schema<CustomerPostDocument>({
@@ -17,10 +19,15 @@ const customerPostSchema = new Schema<CustomerPostDocument>({
         type: String,
         required: true,
     },
-    customerPostId: {
+    firstName: {
         type: String,
         required: true,
     },
+    lastName: {
+        type: String,
+        required: true,
+    }
+
 });
 const CustomerPost = model("customerPost", customerPostSchema);
 

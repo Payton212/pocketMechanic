@@ -52,6 +52,16 @@ export const GET_ME = gql`
   }
 `;
 
+export const GET_CUSTOMER_ID = gql`
+  query GetUserCustomerId($userId: ID!) {
+    user(id: $userId) {
+      customer {
+        customerId
+      }
+    }
+  }
+`;
+
 export const GET_CONTRACTOR_POSTS = gql`
 query getContractractorPosts {
   contractorPosts {

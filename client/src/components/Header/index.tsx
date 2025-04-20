@@ -13,7 +13,7 @@ const Header = () => {
   };
   if (Auth.loggedIn()) {
     const { username: userParam } = useParams();
-    const { loading, data } = useQuery(GET_ME, {
+    const { data } = useQuery(GET_ME, {
       variables: { username: userParam },
     });
     const user = data?.me || {};
@@ -33,7 +33,7 @@ const Header = () => {
               <Link className="btn btn-lg btn-light m-2" to="/addCarForm">
                 add car
               </Link>
-              <Link className="btn btn-lg btn-light m-2" to="/addCustomerPost">
+              <Link className="btn btn-lg btn-light m-2" to={`/addCustomerPost/${user._id}`}>
                 add Post
               </Link>
               <button className="btn btn-lg btn-light m-2" onClick={logout}>

@@ -27,6 +27,8 @@ contractorPostCount: Int
     input addContractor {
         username: String
         email: String
+        firstName: String
+        lastName: String
     }
 
 type Customer {
@@ -42,6 +44,8 @@ customerPostCount: Int
     input addCustomer {
         username: String
         email: String
+        firstName: String
+        lastName: String
     }
 
 type CustomerPost {
@@ -53,6 +57,7 @@ firstName: String
 lastName: String
 }
     input addCustomerPost {
+        customerId: String
         image: String
         description: String
         budget: String
@@ -104,11 +109,12 @@ user: User
 }
 
 type Query {
-me: User
+me: User!
+user(id: ID!): User
 contractorPosts: [ContractorPost]!
 customerPosts: [CustomerPost]!
-contractorPost(contractorPostId: ID!): ContractorPost
-customerPost(customerPostId: ID!): CustomerPost
+contractorPost(contractorPostId: ID!): ContractorPost!
+customerPost(customerPostId: ID!): CustomerPost!
 }
 
 type Mutation {

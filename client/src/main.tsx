@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         element: <AddContractorPostForm />,
       },
       {
-        path: "/addCustomerPost",
+        path: "/addCustomerPost/:userId",
         element: <AddCustomerPostForm />,
       },
       {

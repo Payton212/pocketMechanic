@@ -14,6 +14,8 @@ const Signup = () => {
     email: "",
     password: "",
     isContractor: Boolean,
+    firstName: "",
+    lastName:"",
   });
 
   const [addUser, { error, data }] = useMutation(ADD_USER);
@@ -43,7 +45,14 @@ const Signup = () => {
     event.preventDefault();
     try {
       const { data } = await addUser({
-        variables: { input: { ...formState } },
+        variables: {
+          input: {
+            email: formState.email,
+            username: formState.username,
+            password: formState.password,
+            isContractor: formState.isContractor,
+          },
+        },
       });
       Auth.login(data.addUser.token);
       if (data.addUser.user.isContractor === true) {
@@ -53,6 +62,8 @@ const Signup = () => {
             input: {
               email: formState.email,
               username: formState.username,
+              firstName: formState.firstName,
+              lastName: formState.lastName,
             },
           },
         });
@@ -63,11 +74,13 @@ const Signup = () => {
       }
       else {
         try {
-        const {data: CustomerData } = await addCustomer({
+        const { data: CustomerData } = await addCustomer({
           variables: {
             input: {
               email: formState.email,
               username: formState.username,
+              firstName: formState.firstName,
+              lastName: formState.lastName,
             },
           },
         });
@@ -120,10 +133,27 @@ const Signup = () => {
                 />
                 <label htmlFor="isContractor">Contractor?</label>
                 <input
+                  className="form-input"
                   type="checkbox"
                   id="checkIsContractor"
                   name="isContractor"
                   checked={isChecked}
+                  onChange={handleChange}
+                />
+                <input
+                  className="form-input"
+                  placeholder="first name"
+                  name="firstName"
+                  type="firstName"
+                  value={formState.firstName}
+                  onChange={handleChange}
+                />
+                <input
+                  className="form-input"
+                  placeholder="last name"
+                  name="lastName"
+                  type="lastName"
+                  value={formState.lastName}
                   onChange={handleChange}
                 />
                 <button
