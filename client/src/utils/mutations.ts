@@ -76,11 +76,12 @@ export const ADD_CUSTOMER_POST = gql`
           firstName
           lastName
           budget
+          customerNumber
         }
-          username
-          email
-          firstName
-          lastName
+        username
+        email
+        firstName
+        lastName
         customerPostCount
       }
     }
@@ -122,90 +123,57 @@ export const ADD_CAR = gql`
 }
 `;
 export const DELETE_CONTRACTOR_POST = gql`
-mutation deleteContractorPost($contractorPostId: ID!) {
-  deleteContractorPost(contractorPostId: $contractorPostId){
-  _id
-  username
-  email
-  contractor{
-    contractorId
-    employees
-    contractorName
-    contractorPost {
-      contractorPostId
-      image
-      description
-      contractorName
-      }
-    description
-    contractorPostCount
-    }
-  }
-}
-`
-export const DELETE_CUSTOMER_POST = gql`
-mutation deleteCustomerPost($customerPostId: ID!) {
-  deleteCustomerPost(customerPostId: $customerPostId) {
-  _id
-  username
-  email
-  customer{
-    customerId
-    firstName
-    lastName
-    customerPost {
-      customerPostId
-      image
-      description
-      budget
-      }
-    car
-    customerPostCount
-    }
-  }
-}
-`
-export const DELETE_EMPLOYEE = gql`
-  mutation deleteCar($carId: ID!) {
-    deleteCar(carId: $carId) {
+  mutation deleteContractorPost($_id: ID!, $contractorId: ID!) {
+    deleteContractorPost(_id: $_id, contractorId: $contractorId) {
       _id
-      username
-      email
-      contractor {
-        contractorId
-        employees {
-          employeeId
-          image
-          firstName
-          lastName
-          description
-          }
-        contractorName
-        contractorPost 
+      contractorPost {
+        _id
         description
-        contractorPostCount
+        contractorNumber
+        contractorName
+      }
+    }
+  }
+`;
+export const DELETE_CUSTOMER_POST = gql`
+  mutation deleteCustomerPost($_id: ID!, $customerId: ID!) {
+    deleteCustomerPost(_id: $_id, customerId: $customerId) {
+      _id
+      customerPost {
+        _id
+        image
+        description
+        budget
+        firstName
+        lastName
+        customerNumber
+      }
+    }
+  }
+`;
+export const DELETE_EMPLOYEE = gql`
+  mutation deleteEmployee($_id: ID!, $contractorId: ID!) {
+    deleteEmployee(_id: $_id, contractorId: $contractorId) {
+      _id
+      employees {
+        _id
+        image
+        firstName
+        lastName
+        description
       }
     }
   }
 `;
 export const DELETE_CAR = gql`
-  mutation deleteCar($carId: ID!) {
-    deleteCar(carId: $carId) {
+  mutation deleteCar($_id: ID!, $customerId: ID!) {
+    deleteCar(_id: $_id, customerId: $customerId) {
       _id
-      username
-      email
-      customer {
-        customerId
-        firstName
-        lastName
-        customerPost
-        car {
-          carId
-          carYear
-          carMake
-          carModel
-          }
-        customerPostCount
+      car {
+        _id
+        carYear
+        carMake
+        carModel
       }
     }
   }

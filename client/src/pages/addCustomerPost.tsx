@@ -15,6 +15,7 @@ const addCustomerPostForm = () => {
     budget: "",
     firstName: "",
     lastName: "",
+    customerNumber:"",
   });
   const { loading: customerLoading, data: customerData } = useQuery(GET_CUSTOMER_ID, {
     variables: { userId },
@@ -33,8 +34,10 @@ const addCustomerPostForm = () => {
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    if (customerData && customerData.user && customerData.user.customer && !customerLoading) {
-    const customerId = customerData.user.customer._id;
+    console.log(customerData)
+    if (customerData && customerData.userCustomer && customerData.userCustomer.customer && !customerLoading) {
+      const customerId = customerData.userCustomer.customer._id;
+      
       if (!token) {
         return false;
       }
@@ -95,6 +98,14 @@ const addCustomerPostForm = () => {
                   type="description"
                   name="description"
                   value={CustomerPostForm.description}
+                  onChange={handleChange}
+                />
+                <input
+                  className="form-input"
+                  placeholder="what is your phone Number"
+                  type="customerNumber"
+                  name="customerNumber"
+                  value={CustomerPostForm.customerNumber}
                   onChange={handleChange}
                 />
                 <button

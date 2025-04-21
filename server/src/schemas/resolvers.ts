@@ -1,18 +1,26 @@
-import { User, Customer, Car, CustomerPost, ContractorPost, Contractor, Employee } from "../models/index.js";
-import { signToken, AuthenticationError } from '../utils/auth.js'; 
+import {
+  User,
+  Customer,
+  Car,
+  CustomerPost,
+  ContractorPost,
+  Contractor,
+  Employee,
+} from "../models/index.js";
+import { signToken, AuthenticationError } from "../utils/auth.js";
 
 interface AddUserArgs {
-    input: {
-        username: string;
-        email: string;
-        password: string;
-    }
-}
-interface LoginUserArgs {
+  input: {
+    username: string;
     email: string;
     password: string;
+  };
 }
-interface CustomerArgs{
+interface LoginUserArgs {
+  email: string;
+  password: string;
+}
+interface CustomerArgs {
   input: {
     username: string;
     email: string;
@@ -20,17 +28,15 @@ interface CustomerArgs{
     lastName: string;
   };
 }
-interface CustomerId{
-  customerId: string;
-}
 interface ContractorArgs {
   input: {
     username: string;
     email: string;
   };
 }
-interface CustomerPost {
+interface CustomerPostId {
   _id: string;
+  customerId: string;
 }
 interface CustomerPostArgs {
   customerId: string;
@@ -42,8 +48,9 @@ interface CustomerPostArgs {
     lastName: string;
   };
 }
-interface ContractorPost {
-    _id: string;
+interface ContractorPostId {
+  _id: string;
+  contractorId: string;
 }
 interface ContractorPostArgs {
   contractorId: string;
@@ -52,7 +59,7 @@ interface ContractorPostArgs {
     image: string;
     contractorName: string;
     constractorNumber: string;
-  }
+  };
 }
 interface EmployeeArgs {
   contractorId: string;
@@ -63,19 +70,21 @@ interface EmployeeArgs {
     description: string;
   };
 }
-interface Employee {
-    _id: string;
+interface EmployeeId {
+  _id: string;
+  contractorId: string;
 }
-interface CarArgs{
+interface CarArgs {
   customerId: string;
-    input: {
-        carYear: string;
-        carMake: string;
-        carModel: string;
-    }
+  input: {
+    carYear: string;
+    carMake: string;
+    carModel: string;
+  };
 }
-interface Car {
-    carId: string;
+interface CarId {
+  _id: string;
+  customerId: string;
 }
 const resolvers = {
   Query: {
@@ -83,7 +92,7 @@ const resolvers = {
       if (!context.user) {
         throw new AuthenticationError("could not authenticate User.");
       }
-      const myUser = await User.findById({ _id: context.user._id })
+      const fullUser = await User.findById(context.user._id)
         .populate({
           path: "customer",
           populate: [{ path: "car" }, { path: "customerPost" }],
@@ -92,21 +101,18 @@ const resolvers = {
           path: "contractor",
           populate: [{ path: "employees" }, { path: "contractorPost" }],
         });
-      return myUser;
+      return fullUser;
     },
     userCustomer: async (_parent: any, { id }: any, context: any) => {
       if (context.user) {
         try {
           // Assuming you have a User model defined with Mongoose
           const user = await User.findById(id).populate("customer");
-          if (!user) {
-            throw new Error("User not found");
-          }
           return user;
         } catch (error) {
           console.error(error);
         }
-        return console.log(" i am an apple");
+        return console.log(`i am an apple`);
       } else {
         throw new AuthenticationError("could not authenticate User.");
       }
@@ -118,7 +124,7 @@ const resolvers = {
           if (!user) {
             throw new Error("User not found");
           }
-          return user
+          return user;
         } catch (error) {
           console.error(error);
         }
@@ -197,16 +203,18 @@ const resolvers = {
     },
     addContractorPost: async (
       _parent: any,
-      { input }: {input: ContractorPostArgs},
+      { input }: { input: ContractorPostArgs },
       context: any
     ) => {
       const user = context.user;
       if (user) {
         const { contractorId, ...contractorData } = input;
-        const addContractorPost = await ContractorPost.create({ ...contractorData });
+        const addContractorPost = await ContractorPost.create({
+          ...contractorData,
+        });
         await Contractor.findOneAndUpdate(
           { _id: contractorId },
-          { $push: {contractorPost: addContractorPost._id } },
+          { $push: { contractorPost: addContractorPost._id } },
           { new: true }
         );
         return addContractorPost;
@@ -215,29 +223,25 @@ const resolvers = {
     },
     deleteContractorPost: async (
       _parent: any,
-      { _id }: ContractorPost,
+      { _id, contractorId }: ContractorPostId,
       context: any
     ) => {
       const user = context.user;
       if (user) {
-        const deleteContractorPost = await User.findOneAndUpdate(
-          { _id: user._id },
-          {
-            $pull: {
-              contractor: {
-                contractorPost: { contractorPostId: _id },
-              },
-            },
-          },
-          { new: true }
+        await Contractor.findOneAndUpdate(
+          { _id: contractorId },
+          { $pull: { contractorPost: _id } }
         );
-        return deleteContractorPost;
+        const deletedContractorPost = await ContractorPost.findByIdAndDelete(
+          _id
+        );
+        return deletedContractorPost;
       }
       throw new AuthenticationError("you need to be logged in");
     },
     addCustomerPost: async (
       _parent: any,
-      { input }: {input: CustomerPostArgs},
+      { input }: { input: CustomerPostArgs },
       context: any
     ) => {
       const user = context.user;
@@ -255,21 +259,17 @@ const resolvers = {
     },
     deleteCustomerPost: async (
       _parent: any,
-      { _id }: CustomerPost,
+      { _id, customerId }: CustomerPostId,
       context: any
     ) => {
       const user = context.user;
       if (user) {
-        const deleteCustomerPost = await User.findOneAndUpdate(
-          { _id: user._id },
-          {
-            $pull: {
-              customer: { customerPost: { customerPostId: _id } },
-            },
-          },
-          { new: true }
+        await Customer.findOneAndUpdate(
+          { _id: customerId },
+          { $pull: { customerPost: _id } },
         );
-        return deleteCustomerPost;
+        const deletedCustomerPost = await CustomerPost.findByIdAndDelete(_id);
+        return deletedCustomerPost;
       }
       throw new AuthenticationError("you need to be logged in");
     },
@@ -283,24 +283,28 @@ const resolvers = {
       if (user) {
         const { contractorId, ...contractorData } = input;
         const addEmployee = await Employee.create({ ...contractorData });
-         await Contractor.findOneAndUpdate(
+        await Contractor.findOneAndUpdate(
           { _id: contractorId },
           { $push: { employees: addEmployee._id } },
           { new: true }
-         );
+        );
         console.log(addEmployee);
         return addEmployee;
       }
       throw new AuthenticationError("you need to be logged in");
     },
-    deleteEmployee: async (_parent: any, { _id }: Employee, context: any) => {
+    deleteEmployee: async (
+      _parent: any,
+      { _id, contractorId }: EmployeeId,
+      context: any
+    ) => {
       const user = context.user;
       if (user) {
-        const deleteEmployee = await User.findOneAndUpdate(
-          { _id: user._id },
-          { $pull: { contractor: { employees: { employeeId: _id } } } },
-          { new: true }
+        await Contractor.findOneAndUpdate(
+          { _id: contractorId },
+          { $pull: { employees: _id } }
         );
+        const deleteEmployee = await Employee.findByIdAndDelete(_id);
         return deleteEmployee;
       }
       throw new AuthenticationError("you need to be logged in");
@@ -325,19 +329,23 @@ const resolvers = {
       }
       throw new AuthenticationError("you need to be logged in");
     },
-    deleteCar: async (_parent: any, { carId }: Car, context: any) => {
+    deleteCar: async (
+      _parent: any,
+      { _id, customerId }: CarId,
+      context: any
+    ) => {
       const user = context.user;
       if (user) {
-        const deleteCar = await User.findOneAndUpdate(
-          { _id: user._id },
-          { $pull: { customer: { car: { carId: carId } } } },
-          { new: true }
+        await Customer.findOneAndUpdate(
+          { _id: customerId },
+          { $pull: { car: _id } }
         );
-        return deleteCar;
+        const deletedCar = await Car.findByIdAndDelete(_id);
+        return deletedCar;
       }
       throw new AuthenticationError("you need to be logged in");
     },
   },
 };
 
-export default resolvers
+export default resolvers;

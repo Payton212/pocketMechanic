@@ -22,6 +22,6 @@ const carSchema = new Schema<CarDocument>({
     },
 });
 
-const Car = model("car", carSchema);
+const Car = model("Car", carSchema);
 export { type CarDocument, carSchema };
 export default Car

@@ -1708,5 +1708,66 @@ label form [type='radio'] {
 }
 
 .cardBody{
+    border: solid 2px black;
+    border-radius: 15px;
+    padding: 10px;
+}
+.employeeCard, .carCard{
+  width: 200px;
+ margin-right: 20px;
+}
+.employeeBox, .carBox{
+  display:flex;
+  flex-direction: column;
+}
+.ContractorPostCard, .CustomerPostCard{
+  width: 320px;
+  height: 350px;
+  margin: 10px
+}
+ .myPosts{
+  display:flex;
+  justify-content:center;
+}
+.Lists{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.employeeLists, .carLists{
+  display:flex;
+  justify-content: start;
+}
+.contactBox{
+  display: flex;
+  justify-content:left;
+  align-items: center;
   border: solid 2px black;
+  border-radius: 10px;
+  padding: 0 5px 0 5px;
+}
+#contractorContact, #contractorName, #customerName, #customerBudget{
+  font-size: 20px;
+  margin: 5px;
+}
+#contractorNumber{
+  margin: 0px;
+  font-size:20px;
+}
+.customerDescriptionCard{
+  margin: 10px 0 10px 0;
+  height: 160px;
+}
+.contractorDescriptionCard{
+  margin: 10px 0 10px 0;
+  height: 190px;
+}
+.customerBudget,
+.customerContact{
+  display: flex;
+  justify-content: left;
+}
+.budgetBox{
+  border: solid 2px black;
+  border-radius: 10px;
 }

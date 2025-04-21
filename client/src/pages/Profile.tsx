@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client';
 import ContractorPostList from "../components/ContractorPosts/index.js";
 import CustomerPostList from "../components/CustomerPosts/index.js";
 import EmployeeList from "../components/Employees/index.js";
+import CarList from "../components/Cars/index.js";
 import {
   GET_ME
 } from "../utils/queries.js";
@@ -12,14 +13,15 @@ import Auth from '../utils/auth';
 
 const Profile = () => {
   const { username: userParam } = useParams();
-
-  const { loading, data } = useQuery(GET_ME, {
-    variables: { username: userParam },
-  });
+  const { loading, data } = useQuery(GET_ME);
 
   const user = data?.me || {};
 
-  if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
+  if (
+    userParam &&
+    Auth.loggedIn() &&
+    Auth.getProfile().data.username === userParam
+  ) {
     return <Navigate to="/me" />;
   }
 
@@ -27,6 +29,7 @@ const Profile = () => {
     return <div>Loading...</div>;
   }
   if (!user?.username) {
+    
     return (
       <h4>
         You need to be logged in to see this. Use the navigation links above to
@@ -35,31 +38,33 @@ const Profile = () => {
     );
   }
   if (user.isContractor) {
-    console.log(user);
     return (
       <>
         {loading ? (
           <div>Loading...</div>
         ) : (
-            <div>
-            <h1>My Posts</h1>
+          <div>
+            <div className="employeeBox">
+              <h3>My Employee's</h3>
+              <EmployeeList
+                employees={user.contractor.employees}
+                title="My Employee's"
+                contractorId={user.contractor._id}
+              />
+            </div>
+
+            <div className="Lists">
+              <h1>My Posts</h1>
               <div>
                 <ContractorPostList
                   contractorPosts={user.contractor.contractorPost}
-                  title="Contractor"
-              />
-                <div>
-                  <EmployeeList
-                    employees={user.contractor.employees}
-                    title="Employee"
-                  />
-                </div>
+                  contractorId={user.contractor._id}
+                />
               </div>
-              </div>
+            </div>
+          </div>
         )}
-        
       </>
-      
     );
   } else {
     return (
@@ -67,13 +72,27 @@ const Profile = () => {
         {loading ? (
           <div>Loading...</div>
         ) : (
-            <div>
-              <h1>My Posts</h1>
-            <CustomerPostList
-              customerPosts={user.customer.customerPost}
-              title="Customer"
+          <div>
+            <div className="carBox">
+              <h3>My Cars's</h3>
+              <CarList
+                cars={user.customer.car}
+                title="Cars"
+                customerId={user.customer._id}
               />
             </div>
+
+            <div className="Lists">
+              <h1>My Posts</h1>
+              <div>
+                <CustomerPostList
+                  customerPosts={user.customer.customerPost}
+                  title="My"
+                  customerId={user.customer._id}
+                />
+              </div>
+            </div>
+          </div>
         )}
       </>
     );

@@ -15,7 +15,7 @@ const addCarForm = () => {
         carModel: '',
     });
 
-    const [addCar, { error }] = useMutation(ADD_CAR);
+    const [addCar, { error, data }] = useMutation(ADD_CAR);
 const { loading: customerLoading, data: customerData } = useQuery(
   GET_CUSTOMER_ID,
   {
@@ -34,8 +34,8 @@ const { loading: customerLoading, data: customerData } = useQuery(
     event.preventDefault();
     const token = Auth.loggedIn() ? Auth.getToken() : null;
     console.log(customerData);
-    if (customerData && customerData.user && customerData.user.customer && !customerLoading) {
-      const customerId = customerData.user.customer._id;
+    if (customerData && customerData.userCustomer && customerData.userCustomer.customer && !customerLoading) {
+      const customerId = customerData.userCustomer.customer._id;
       console.log(customerId);
       if (!token) {
         return false;
@@ -58,7 +58,12 @@ const { loading: customerLoading, data: customerData } = useQuery(
           <div>
             <h4> add Car</h4>
             <div>
-              
+              {data ? (
+                <p>
+                  Success! You may now head{" "}
+                  <Link to="/">back to the homepage.</Link>
+                </p>
+              ) : (
                 <form onSubmit={handleFormSubmit}>
                   <input
                     className="form-input"
@@ -92,6 +97,7 @@ const { loading: customerLoading, data: customerData } = useQuery(
                     Submit
                   </button>
                 </form>
+              )}
               {error && (
                 <div className="my-3 p-3 bg-danger text-white">
                   {error.message}

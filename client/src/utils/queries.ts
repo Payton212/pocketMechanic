@@ -1,57 +1,59 @@
 import { gql } from '@apollo/client';
 
 export const GET_ME = gql`
- query me {
-  me {
-    _id
-    username
-    email
-    isContractor
-    customer {
+  query me {
+    me {
       _id
       username
       email
-      firstName
-      lastName
-      customerPost {
+      isContractor
+      customer {
         _id
-        image
-        description
-        budget
+        username
+        email
         firstName
         lastName
+        customerPost {
+          _id
+          image
+          description
+          budget
+          firstName
+          lastName
+          customerNumber
+        }
+        car {
+          _id
+          carYear
+          carMake
+          carModel
+        }
+        customerPostCount
       }
-      car {
+      contractor {
         _id
-        carYear
-        carMake
-        carModel
-      }
-      customerPostCount
-    }
-    contractor {
-      _id
-      firstName
-      lastName
-      email
-      username
-      employees {
-        _id
-        image
         firstName
         lastName
-        description
+        email
+        username
+        employees {
+          _id
+          image
+          firstName
+          lastName
+          description
+        }
+        contractorPost {
+          _id
+          description
+          contractorNumber
+          contractorName
+        }
+        contractorPostCount
       }
-      contractorPost {
-        _id
-        description
-        contractorNumber
-        contractorName
-      }
-      contractorPostCount
     }
   }
-}`;
+`;
 
 export const GET_CUSTOMER_ID = gql`
   query GetUserCustomerId($userId: ID!) {
@@ -92,15 +94,16 @@ query getContractractorPosts {
 }
 `;
 export const GET_CUSTOMER_POSTS = gql`
-query getCustomerPosts {
-  customerPosts {
-    _id
-    description
-    budget
-    firstName
-    lastName
+  query getCustomerPosts {
+    customerPosts {
+      _id
+      description
+      budget
+      firstName
+      lastName
+      customerNumber
+    }
   }
-}
 `;
 export const GET_SINGLE_CONTRACTOR_POSTS = gql`
 query getSingleContractorPost($contractorPostId: ID!) {

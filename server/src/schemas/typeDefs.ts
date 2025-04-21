@@ -56,6 +56,7 @@ description: String
 budget: String
 firstName: String
 lastName: String
+customerNumber: String
 }
     input addCustomerPost {
         customerId: String
@@ -64,6 +65,7 @@ lastName: String
         budget: String
         firstName: String
         lastName: String
+        customerNumber: String
     }
 
 type ContractorPost {
@@ -128,13 +130,13 @@ addUser(input: addUser!): Auth
 addContractor(input: addContractor!): Contractor
 addCustomer(input: addCustomer!): Customer
 addContractorPost(input: addContractorPost!): User
-deleteContractorPost(contractorPostId: ID!): ContractorPost
+deleteContractorPost(_id: ID!, contractorId: ID!): Contractor
 addCustomerPost(input: addCustomerPost!): User
-deleteCustomerPost(customerPostId: ID!): CustomerPost
+deleteCustomerPost(_id: ID!, customerId: ID!): Customer
 addEmployee(input: addEmployee!): User
-deleteEmployee(employeeId: ID!): Employee
+deleteEmployee(_id: ID!, contractorId: ID!): Contractor
 addCar(input: addCar!): User
-deleteCar(carId: ID!): Car
+deleteCar(_id: ID!, customerId: ID!): Customer
 }
 `;
 

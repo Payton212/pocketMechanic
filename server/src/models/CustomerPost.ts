@@ -6,6 +6,7 @@ interface CustomerPostDocument extends Document {
     budget: String;
     firstName: String;
     lastName: String;
+    customerNumber: String;
 }
 
 const customerPostSchema = new Schema<CustomerPostDocument>({
@@ -25,10 +26,14 @@ const customerPostSchema = new Schema<CustomerPostDocument>({
     lastName: {
         type: String,
         required: true,
+    },
+    customerNumber: {
+        type: String,
+        required: true,
     }
 
 });
-const CustomerPost = model("customerPost", customerPostSchema);
+const CustomerPost = model("CustomerPost", customerPostSchema);
 
 export { type CustomerPostDocument, customerPostSchema };
 export default CustomerPost

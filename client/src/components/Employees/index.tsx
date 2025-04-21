@@ -1,3 +1,5 @@
+import { DELETE_EMPLOYEE } from "../../utils/mutations";
+import { useMutation } from "@apollo/client";
 interface Employee {
     _id: string;
     image: string;
@@ -5,29 +7,64 @@ interface Employee {
     lastName: string;
     description: string;
 }
-interface EmployeeListProps{
-    employees: Employee[];
-    title: string;
+interface EmployeeListProps {
+  employees: Employee[];
+  title: string;
+  contractorId?: string;
 }
 
-const EmployeeList: React.FC<EmployeeListProps> = ({ employees, title }) => {
+const EmployeeList: React.FC<EmployeeListProps> = ({ employees, title, contractorId }) => {
+    const [removeEmployee] = useMutation(DELETE_EMPLOYEE);
     if (!employees.length) {
         return <h3>No Employees</h3>
     }
-    return (
-      <div className="cardBody">
-        <h3>{title}</h3>
+  const deleteEmployee = async (_id: string, contractorId: string) => {
+    try {
+      const { data } = await removeEmployee({
+        variables: {
+          _id: _id,
+          contractorId: contractorId
+        },
+      });
+      console.log(`deleted: ${data}`);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+    if (contractorId) {
+         return (
+      <div className="employeeLists">
         {employees &&
           employees.map((employee) => (
-            <div key={employee._id} className="employeeCard">
+            <div key={employee._id} className="employeeCard cardBody">
               <h1>
                 {employee.firstName} {employee.lastName}
               </h1>
               {employee.image ? <img src={employee.image} /> : null}
-              <p>{employee.description}</p>
+                  <p>{employee.description}</p>
+                  <button
+                      className="deleteButton"
+                      onClick={() => deleteEmployee(employee._id, contractorId)}
+                  >remove</button>
             </div>
           ))}
       </div>
     );
+    } else {
+        return (
+            <div>
+          {employees &&
+            employees.map((employee) => (
+              <div key={employee._id} className="employeeCard cardBody">
+                <h1>
+                  {employee.firstName} {employee.lastName}
+                </h1>
+                {employee.image ? <img src={employee.image} /> : null}
+                <p>{employee.description}</p>
+              </div>
+            ))}
+        </div>
+        );
+    }
 };
 export default EmployeeList;
