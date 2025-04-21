@@ -77,8 +77,14 @@ const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, titl
               </h1>
               {customerPost.image ? <img src={customerPost.image} /> : null}
               <div className="budgetBox">
-                <h1 id="customerBudget">Budget:</h1>
-                <p id="customerBudget">$ {customerPost.budget}</p>
+                <div className="customerBudget">
+                  <h1 id="customerBudget">Budget:</h1>
+                  <p id="customerBudget">$ {customerPost.budget}</p>
+                </div>
+                <div className="customerContact">
+                  <h1 id="contractorContact">Contact: </h1>
+                  <p id="contractorNumber">{customerPost.customerNumber}</p>
+                </div>
               </div>
               <div className="customerDescriptionCard">
                 <p>{customerPost.description}</p>
