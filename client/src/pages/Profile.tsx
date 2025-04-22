@@ -40,7 +40,7 @@ const Profile = () => {
   if (user.isContractor) {
     return (
       <>
-        {loading ? (
+        {loading && user.contractor.employees ? (
           <div>Loading...</div>
         ) : (
           <div>
@@ -68,7 +68,7 @@ const Profile = () => {
   } else {
     return (
       <>
-        {loading ? (
+        {loading && user.customer.car ? (
           <div>Loading...</div>
         ) : (
           <div>
