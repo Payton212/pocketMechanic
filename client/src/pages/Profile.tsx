@@ -40,15 +40,15 @@ const Profile = () => {
   if (user.isContractor) {
     return (
       <>
-        {loading && user.contractor.employees ? (
+        {loading ? (
           <div>Loading...</div>
         ) : (
           <div>
             <div className="employeeBox">
               <h3>My Employee's</h3>
               <EmployeeList
-                employees={user.contractor.employees}
-                contractorId={user.contractor._id}
+                employees={user.contractor.employees || []}
+                contractorId={user.contractor._id || {}}
               />
             </div>
 
@@ -56,8 +56,8 @@ const Profile = () => {
               <h1>My Posts</h1>
               <div>
                 <ContractorPostList
-                  contractorPosts={user.contractor.contractorPost}
-                  contractorId={user.contractor._id}
+                  contractorPosts={user.contractor.contractorPost|| []}
+                  contractorId={user.contractor._id|| {}}
                 />
               </div>
             </div>
@@ -68,16 +68,16 @@ const Profile = () => {
   } else {
     return (
       <>
-        {loading && user.customer.car ? (
+        {loading  ? (
           <div>Loading...</div>
         ) : (
           <div>
             <div className="carBox">
               <h3>My Cars's</h3>
               <CarList
-                cars={user.customer.car}
+                cars={user.customer.car|| []}
                 title="Cars"
-                customerId={user.customer._id}
+                customerId={user.customer._id|| {}}
               />
             </div>
 
@@ -85,9 +85,9 @@ const Profile = () => {
               <h1>My Posts</h1>
               <div>
                 <CustomerPostList
-                  customerPosts={user.customer.customerPost}
+                  customerPosts={user.customer.customerPost|| []}
                   title="My"
-                  customerId={user.customer._id}
+                  customerId={user.customer._id|| {}}
                 />
               </div>
             </div>
