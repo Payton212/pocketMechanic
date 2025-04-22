@@ -1715,6 +1715,7 @@ label form [type='radio'] {
 .employeeCard, .carCard{
   width: 250px;
  margin-right: 20px;
+ margin-top: 10px;
 }
 .employeeBox, .carBox{
   display:flex;
@@ -1728,6 +1729,7 @@ label form [type='radio'] {
  .myPosts{
   display:flex;
   justify-content:center;
+  flex-wrap:wrap;
 }
 .Lists{
   display: flex;
@@ -1737,6 +1739,7 @@ label form [type='radio'] {
 .employeeLists, .carLists{
   display:flex;
   justify-content: start;
+  flex-wrap: wrap;
 }
 .contactBox{
   display: flex;
