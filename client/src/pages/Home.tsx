@@ -40,6 +40,19 @@ const Home = () => {
     } else {
       return <div>Unable to load user role.</div>;
     }
+  } else {
+    return (
+      <>
+       <CustomerPostList
+              customerPosts={CustomerPosts}
+              title="Customer"
+            />
+      <ContractorPostList
+        contractorPosts={ContractorPosts}
+        title="Contractor"
+        />
+      </>
+    );
   }
 };
 
