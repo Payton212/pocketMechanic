@@ -9,11 +9,10 @@ interface Employee {
 }
 interface EmployeeListProps {
   employees: Employee[];
-  title: string;
   contractorId?: string;
 }
 
-const EmployeeList: React.FC<EmployeeListProps> = ({ employees, title, contractorId }) => {
+const EmployeeList: React.FC<EmployeeListProps> = ({ employees, contractorId }) => {
     const [removeEmployee] = useMutation(DELETE_EMPLOYEE);
     if (!employees.length) {
         return <h3>No Employees</h3>
@@ -41,7 +40,10 @@ const EmployeeList: React.FC<EmployeeListProps> = ({ employees, title, contracto
                 {employee.firstName} {employee.lastName}
               </h1>
               {employee.image ? <img src={employee.image} /> : null}
-                  <p>{employee.description}</p>
+              <div className="employeeDescriptionBox">
+                                  <p>{employee.description}</p>
+              </div>
+
                   <button
                       className="deleteButton"
                       onClick={() => deleteEmployee(employee._id, contractorId)}

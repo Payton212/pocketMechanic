@@ -48,7 +48,6 @@ const Profile = () => {
               <h3>My Employee's</h3>
               <EmployeeList
                 employees={user.contractor.employees}
-                title="My Employee's"
                 contractorId={user.contractor._id}
               />
             </div>

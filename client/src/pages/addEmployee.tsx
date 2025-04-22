@@ -58,7 +58,7 @@ const addEmployeeForm = () => {
     <main>
       <div>
         <div>
-          <h4> add Car</h4>
+          <h4> add Employee </h4>
           <div>
             {data ? (
               <p>

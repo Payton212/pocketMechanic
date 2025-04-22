@@ -1713,7 +1713,7 @@ label form [type='radio'] {
     padding: 10px;
 }
 .employeeCard, .carCard{
-  width: 200px;
+  width: 250px;
  margin-right: 20px;
 }
 .employeeBox, .carBox{
@@ -1754,9 +1754,9 @@ label form [type='radio'] {
   margin: 0px;
   font-size:20px;
 }
-.customerDescriptionCard{
-  margin: 10px 0 10px 0;
-  height: 160px;
+.customerDescriptionCard, .employeeDescriptionBox{
+  margin: 0px 0 10px 0;
+  height: 150px;
 }
 .contractorDescriptionCard{
   margin: 10px 0 10px 0;
