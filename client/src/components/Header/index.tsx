@@ -25,19 +25,19 @@ const Header = () => {
                 </Link>
                 <p className="m-0">affordable mechanics you can trust</p>
                 <Link className="btn btn-lg btn-light m-2" to={`/`}>
-                  home
+                  Home
                 </Link>
                 <Link
                   className="btn btn-lg btn-light m-2"
                   to={`/addCarForm/${user._id}`}
                 >
-                  add car
+                  Add Car
                 </Link>
                 <Link
                   className="btn btn-lg btn-light m-2"
                   to={`/addCustomerPost/${user._id}`}
                 >
-                  add Post
+                  Add Post
                 </Link>
                 <button className="btn btn-lg btn-light m-2" onClick={logout}>
                   Logout
@@ -78,19 +78,19 @@ const Header = () => {
                 </Link>
                 <p className="m-0">affordable mechanics you can trust</p>
                 <Link className="btn btn-lg btn-light m-2" to={`/`}>
-                  home
+                  Home
                 </Link>
                 <Link
                   className="btn btn-lg btn-info m-2"
                   to={`/addContractorPost/${user._id}`}
                 >
-                  add Post
+                  Add Post
                 </Link>
                 <Link
                   className="btn btn-lg btn-light m-2"
                   to={`/addEmployee/${user._id}`}
                 >
-                  add Employee
+                  Add Employee
                 </Link>
                 <button className="btn btn-lg btn-light m-2" onClick={logout}>
                   Logout
