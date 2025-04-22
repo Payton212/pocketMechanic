@@ -43,13 +43,12 @@ const Home = () => {
   } else {
     return (
       <>
-       <CustomerPostList
-              customerPosts={CustomerPosts}
-              title="Customer"
-            />
-      <ContractorPostList
-        contractorPosts={ContractorPosts}
-        title="Contractor"
+        <h1>Customer Post's</h1>
+        <CustomerPostList customerPosts={CustomerPosts} title="Customer" />
+        <h1>Contractor Post's</h1>
+        <ContractorPostList
+          contractorPosts={ContractorPosts}
+          title="Contractor"
         />
       </>
     );
