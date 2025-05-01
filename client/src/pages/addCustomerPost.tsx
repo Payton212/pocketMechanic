@@ -15,7 +15,8 @@ const addCustomerPostForm = () => {
     budget: "",
     firstName: "",
     lastName: "",
-    customerNumber:"",
+    userNumber: "",
+    img: "",
   });
   const { loading: customerLoading, data: customerData } = useQuery(GET_CUSTOMER_ID, {
     variables: { userId },
@@ -23,18 +24,39 @@ const addCustomerPostForm = () => {
  
 
   const [addCustomerPost, { error, data }] = useMutation(ADD_CUSTOMER_POST);
+  const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return
+    const file = event.target.files[0];
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "pocket-Mechanic");
+    data.append("cloud_name", "dvxgfmiiu");
+
+    const res = await fetch("https://api.cloudinary.com/v1_1/dvxgfmiiu/image/upload", {
+      method: "POST",
+      body: data
+    });
+    const uploadedImage = await res.json()
+    setCustomerPost({
+      ...CustomerPostForm,
+      img: uploadedImage.url,
+    });
+  }
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setCustomerPost({
       ...CustomerPostForm,
       [name]: value,
+      userNumber: customerData.userCustomer.customer.userNumber,
+      firstName: customerData.userCustomer.customer.firstName,
+      lastName: customerData.userCustomer.customer.lastName,
     });
+    console.log(CustomerPostForm);
   };
 
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    console.log(customerData)
     if (customerData && customerData.userCustomer && customerData.userCustomer.customer && !customerLoading) {
       const customerId = customerData.userCustomer.customer._id;
       
@@ -67,23 +89,12 @@ const addCustomerPostForm = () => {
                 <Link to="/">back to the homepage.</Link>
               </p>
             ) : (
-              <form onSubmit={handleFormSubmit}>
-                <input
-                  className="form-input"
-                  placeholder="first name"
-                  type="firstName"
-                  name="firstName"
-                  value={CustomerPostForm.firstName}
-                  onChange={handleChange}
-                />
-                <input
-                  className="form-input"
-                  placeholder="last name"
-                  type="lastName"
-                  name="lastName"
-                  value={CustomerPostForm.lastName}
-                  onChange={handleChange}
-                />
+                <form onSubmit={handleFormSubmit}>
+                  <input
+                    className="form-input"
+                    type="file"
+                    onChange={handleFileUpload}
+                  />
                 <input
                   className="form-input"
                   placeholder="what is your budget?"
@@ -99,15 +110,8 @@ const addCustomerPostForm = () => {
                   name="description"
                   value={CustomerPostForm.description}
                   onChange={handleChange}
-                />
-                <input
-                  className="form-input"
-                  placeholder="what is your phone Number"
-                  type="customerNumber"
-                  name="customerNumber"
-                  value={CustomerPostForm.customerNumber}
-                  onChange={handleChange}
-                />
+                  />
+                  
                 <button
                   className="btn btn-block btn-primary"
                   style={{ cursor: "pointer" }}

@@ -1722,8 +1722,8 @@ label form [type='radio'] {
   flex-direction: column;
 }
 .ContractorPostCard, .CustomerPostCard{
-  width: 320px;
-  height: 350px;
+  width: fit-content;
+  height: fit-content;
   margin: 10px
 }
  .myPosts{
@@ -1759,11 +1759,13 @@ label form [type='radio'] {
 }
 .customerDescriptionCard, .employeeDescriptionBox{
   margin: 0px 0 10px 0;
-  height: 150px;
+  height: fit-content;
+  width: 300px;
 }
 .contractorDescriptionCard{
   margin: 10px 0 10px 0;
-  height: 190px;
+  height: fit-content;
+  width: 300px;
 }
 .customerBudget,
 .customerContact{
@@ -1772,5 +1774,17 @@ label form [type='radio'] {
 }
 .budgetBox{
   border: solid 2px black;
+  border-radius: 10px;
+}
+.imgBox{
+  margin: 5px;
+  width:fit-content;
+  height: fit-content;
+  
+}
+#customerImg, #contractorImg{
+  width: 300px;
+  height: 400px;
+  border: solid black 2px;
   border-radius: 10px;
 }

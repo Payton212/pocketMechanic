@@ -12,6 +12,7 @@ interface CustomerDocument extends Document {
   lastName: String;
   customerPost: CustomerPostDocument[];
   customerPostCount: Number;
+  userNumber: string;
   // favoriteContractor: ContractorId;
 }
 const customerSchema = new Schema<CustomerDocument>({
@@ -41,6 +42,10 @@ const customerSchema = new Schema<CustomerDocument>({
   },
   lastName: {
     type: String,
+  },
+  userNumber: {
+    type: String,
+    required: true,
   },
 });
 

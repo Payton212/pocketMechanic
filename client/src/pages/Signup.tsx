@@ -14,8 +14,11 @@ const Signup = () => {
     email: "",
     password: "",
     isContractor: Boolean,
+    businessName: "",
+    ownerName:"",
     firstName: "",
-    lastName:"",
+    lastName: "",
+    userNumber:"",
   });
 
   const [addUser, { error, data }] = useMutation(ADD_USER);
@@ -58,15 +61,16 @@ const Signup = () => {
       if (data.addUser.user.isContractor === true) {
         try {
           const { data: ContractorData } = await addContractor({
-          variables: {
-            input: {
-              email: formState.email,
-              username: formState.username,
-              firstName: formState.firstName,
-              lastName: formState.lastName,
+            variables: {
+              input: {
+                email: formState.email,
+                username: formState.username,
+                businessName: formState.businessName,
+                userNumber: formState.userNumber,
+                ownerName: formState.ownerName,
+              },
             },
-          },
-        });
+          });
         console.log(ContractorData);
         } catch (e) {
           console.error(e);
@@ -79,6 +83,7 @@ const Signup = () => {
             input: {
               email: formState.email,
               username: formState.username,
+              userNumber: formState.userNumber,
               firstName: formState.firstName,
               lastName: formState.lastName,
             },
@@ -140,22 +145,62 @@ const Signup = () => {
                   checked={isChecked}
                   onChange={handleChange}
                 />
-                <input
-                  className="form-input"
-                  placeholder="first name"
-                  name="firstName"
-                  type="firstName"
-                  value={formState.firstName}
-                  onChange={handleChange}
-                />
-                <input
-                  className="form-input"
-                  placeholder="last name"
-                  name="lastName"
-                  type="lastName"
-                  value={formState.lastName}
-                  onChange={handleChange}
-                />
+                {isChecked ? (
+                  <>
+                    <input
+                      className="form-input"
+                      placeholder="what is your business phone number?"
+                      type="userNumber"
+                      name="userNumber"
+                      value={formState.userNumber}
+                      onChange={handleChange}
+                    />
+                    <input
+                      className="form-input"
+                      placeholder="business name"
+                      name="businessName"
+                      type="businessName"
+                      value={formState.businessName}
+                      onChange={handleChange}
+                    />
+                    <input
+                      className="form-input"
+                      placeholder="owner name"
+                      name="ownerName"
+                      type="ownerName"
+                      value={formState.ownerName}
+                      onChange={handleChange}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <input
+                      className="form-input"
+                      placeholder="what is your phone number?"
+                      type="userNumber"
+                      name="userNumber"
+                      value={formState.userNumber}
+                      onChange={handleChange}
+                    />
+                    <input
+                      className="form-input"
+                      placeholder="first name"
+                      name="firstName"
+                      type="firstName"
+                      value={formState.firstName}
+                      onChange={handleChange}
+                    />
+                    <input
+                      className="form-input"
+                      placeholder="last name"
+                      name="lastName"
+                      type="lastName"
+                      value={formState.lastName}
+                      onChange={handleChange}
+                    />
+                  </>
+                )}
+
                 <button
                   className="btn btn-block btn-primary"
                   style={{ cursor: "pointer" }}

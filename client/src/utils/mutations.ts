@@ -30,6 +30,9 @@ export const ADD_CONTRACTOR = gql`
     addContractor(input: $input) {
       username
       email
+      ownerName
+      businessName
+      userNumber
     }
   }
 `;
@@ -39,6 +42,9 @@ mutation addCustomer($input: addCustomer!) {
 addCustomer(input: $input) {
   username
   email
+  firstName
+  lastName
+  userNumber
   }
 }
 `
@@ -51,11 +57,13 @@ mutation addContractorPost($input: addContractorPost!) {
     contractor{
       contractorPost {
         description
-        contractorNumber
-        contractorName
+        userNumber
+        businessName
+        img
       }
-        firstName
-        lastName
+        ownerName
+        businessName
+        userNumber
         username
         email
         contractorPostCount
@@ -72,16 +80,17 @@ export const ADD_CUSTOMER_POST = gql`
       customer {
         customerPost {
           description
-          image
+          img
           firstName
           lastName
           budget
-          customerNumber
+          userNumber
         }
         username
         email
         firstName
         lastName
+        userNumber
         customerPostCount
       }
     }
@@ -129,8 +138,8 @@ export const DELETE_CONTRACTOR_POST = gql`
       contractorPost {
         _id
         description
-        contractorNumber
-        contractorName
+        userNumber
+        businessName
       }
     }
   }
@@ -141,12 +150,12 @@ export const DELETE_CUSTOMER_POST = gql`
       _id
       customerPost {
         _id
-        image
         description
         budget
         firstName
         lastName
-        customerNumber
+        userNumber
+        img
       }
     }
   }

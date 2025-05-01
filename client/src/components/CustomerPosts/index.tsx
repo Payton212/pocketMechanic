@@ -2,12 +2,12 @@ import { DELETE_CUSTOMER_POST } from "../../utils/mutations";
 import { useMutation } from "@apollo/client";
 interface CustomerPost {
   _id: string;
-  image: string;
+  img: string;
   description: string;
   firstName: string;
   lastName: string;
   budget: string;
-  customerNumber: string;
+  userNumber: string;
 }
 interface CustomerPostListProps {
   customerPosts: CustomerPost[];
@@ -42,7 +42,6 @@ const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, titl
               <h1 id="customerName">
                 {customerPost.firstName} {customerPost.lastName}
               </h1>
-              {customerPost.image ? <img src={customerPost.image} /> : null}
               <div className="budgetBox">
                 <div className="customerBudget">
                   <h1 id="customerBudget">Budget:</h1>
@@ -50,9 +49,15 @@ const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, titl
                 </div>
                 <div className="customerContact">
                   <h1 id="contractorContact">Contact: </h1>
-                  <p id="contractorNumber">{customerPost.customerNumber}</p>
+                  <p id="contractorNumber">{customerPost.userNumber}</p>
                 </div>
               </div>
+              <div className="imgBox">
+              {customerPost.img ?
+                <img
+                  id="customerImg"
+                  src={customerPost.img} /> : null}
+             </div>
               <div className="customerDescriptionCard">
                 <p>{customerPost.description}</p>
               </div>
@@ -75,7 +80,6 @@ const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, titl
               <h1 id="customerName">
                 {customerPost.firstName} {customerPost.lastName}
               </h1>
-              {customerPost.image ? <img src={customerPost.image} /> : null}
               <div className="budgetBox">
                 <div className="customerBudget">
                   <h1 id="customerBudget">Budget:</h1>
@@ -83,8 +87,15 @@ const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, titl
                 </div>
                 <div className="customerContact">
                   <h1 id="contractorContact">Contact: </h1>
-                  <p id="contractorNumber">{customerPost.customerNumber}</p>
+                  <p id="contractorNumber">{customerPost.userNumber}</p>
                 </div>
+              </div>
+              <div className="imgBox">
+              {customerPost.img ? (
+                <img
+                  id="customerImg"
+                  src={customerPost.img} />
+              ) : null}
               </div>
               <div className="customerDescriptionCard">
                 <p>{customerPost.description}</p>

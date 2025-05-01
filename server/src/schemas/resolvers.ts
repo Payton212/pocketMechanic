@@ -26,12 +26,16 @@ interface CustomerArgs {
     email: string;
     firstName: string;
     lastName: string;
+    userNumber: string;
   };
 }
 interface ContractorArgs {
   input: {
     username: string;
     email: string;
+    ownerName: string;
+    businessName: string;
+    userNumber: string;
   };
 }
 interface CustomerPostId {
@@ -41,11 +45,12 @@ interface CustomerPostId {
 interface CustomerPostArgs {
   customerId: string;
   input: {
-    image: string;
+    img: string;
     description: string;
     budget: string;
     firstName: string;
     lastName: string;
+    userNumber: string;
   };
 }
 interface ContractorPostId {
@@ -56,9 +61,9 @@ interface ContractorPostArgs {
   contractorId: string;
   input: {
     description: string;
-    image: string;
-    contractorName: string;
-    constractorNumber: string;
+    img: string;
+    businessName: string;
+    userNumber: string;
   };
 }
 interface EmployeeArgs {

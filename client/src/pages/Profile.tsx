@@ -16,7 +16,7 @@ const Profile = () => {
   const { loading, data } = useQuery(GET_ME);
 
   const user = data?.me || {};
-
+  console.log(user)
   if (
     userParam &&
     Auth.loggedIn() &&

@@ -3,9 +3,9 @@ import { useMutation } from "@apollo/client";
 interface ContractorPost {
     _id: string;
     description: string;
-    image: string;
-  contractorName: string;
-  contractorNumber: string;
+    img: string;
+  businessName: string;
+  userNumber: string;
 }
 
 interface ContractorPostListProps {
@@ -43,15 +43,18 @@ const ContractorPostList: React.FC<ContractorPostListProps> = ({ contractorPosts
                 className="ContractorPostCard cardBody"
               >
                 <h1 id="contractorName"
-                >{contractorPost.contractorName}</h1>
-                {contractorPost.image ? (
-                  <img src={contractorPost.image} />
-                ) : null}
-                <div className="contactBox">
+                > <div className="contactBox">
                   <h1 id="contractorContact"
                   >Contact: </h1> <p id="contractorNumber"
-                  >{contractorPost.contractorNumber}</p>
-                </div>
+                  >{contractorPost.userNumber}</p>
+                  </div>{contractorPost.businessName}</h1>
+                <div className="imgBox">
+                {contractorPost.img ? (
+                    <img
+                      id="contractorImg"
+                      src={contractorPost.img} />
+                ) : null}
+               </div>
                 <div className="contractorDescriptionCard">
                   <p>{contractorPost.description}</p>
                 </div>
@@ -77,13 +80,16 @@ const ContractorPostList: React.FC<ContractorPostListProps> = ({ contractorPosts
                 key={contractorPost._id}
                 className="ContractorPostCard cardBody"
               >
-                <h1 id="contractorName">{contractorPost.contractorName}</h1>
-                {contractorPost.image ? (
-                  <img src={contractorPost.image} />
-                ) : null}
+                <h1 id="contractorName">{contractorPost.businessName}</h1>
                 <div className="contactBox">
                   <h1 id="contractorContact">Contact: </h1>{" "}
-                  <p id="contractorNumber">{contractorPost.contractorNumber}</p>
+                  <p id="contractorNumber">{contractorPost.userNumber}</p>
+                </div>
+                <div className="imgBox">
+                  {contractorPost.img ?
+                    <img
+                      id="contractorImg"
+                    src={contractorPost.img} /> : null}
                 </div>
                 <div className="contractorDescriptionCard">
                   <p>{contractorPost.description}</p>

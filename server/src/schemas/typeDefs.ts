@@ -17,8 +17,9 @@ contractor: Contractor
 
 type Contractor {
 _id: ID
-firstName: String
-lastName: String
+ownerName: String
+businessName: String
+userNumber: String
 employees: [Employee]
 username: String
 email: String
@@ -28,8 +29,9 @@ contractorPostCount: Int
     input addContractor {
         username: String
         email: String
-        firstName: String
-        lastName: String
+        ownerName: String
+        businessName: String
+        userNumber: String
     }
 
 type Customer {
@@ -38,6 +40,7 @@ username: String
 email: String
 firstName: String
 lastName: String
+userNumber: String
 customerPost: [CustomerPost]
 car: [Car]
 customerPostCount: Int
@@ -47,38 +50,41 @@ customerPostCount: Int
         email: String
         firstName: String
         lastName: String
+        userNumber: String
     }
 
 type CustomerPost {
 _id: ID
-image: String
+img: String
 description: String
 budget: String
 firstName: String
 lastName: String
-customerNumber: String
+userNumber: String
 }
     input addCustomerPost {
         customerId: String
-        image: String
+        img: String
         description: String
         budget: String
         firstName: String
         lastName: String
-        customerNumber: String
+        userNumber: String
     }
 
 type ContractorPost {
 _id: ID
 description: String
-contractorNumber: String
-contractorName: String
+userNumber: String
+businessName: String
+img: String
 }
     input addContractorPost {
         contractorId: String
         description: String
-        contractorNumber: String
-        contractorName: String
+        userNumber: String
+        businessName: String
+        img: String
     }
  
 type Employee {

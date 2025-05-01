@@ -5,12 +5,13 @@ import { type EmployeeDocument } from './Employee.js';
 
 interface ContractorDocument extends Document {
   _id: String;
-  firstName: String;
-  lastName: String;
+  ownerName: String;
+  businessName: String;
   employees: EmployeeDocument[];
   username: String;
   email: String;
   contractorPost: ContractorPostDocument[];
+  userNumber: string;
   contractorPostCount: number;
 }
 
@@ -27,11 +28,15 @@ const contractorSchema = new Schema<ContractorDocument>({
       ref: "Employee",
     },
   ],
-  firstName: {
+  ownerName: {
     type: String,
     required: true,
   },
-  lastName: {
+  businessName: {
+    type: String,
+    required: true,
+  },
+  userNumber: {
     type: String,
     required: true,
   },

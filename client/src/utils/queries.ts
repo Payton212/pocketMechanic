@@ -13,14 +13,15 @@ export const GET_ME = gql`
         email
         firstName
         lastName
+        userNumber
         customerPost {
           _id
-          image
+          img
           description
           budget
           firstName
           lastName
-          customerNumber
+          userNumber
         }
         car {
           _id
@@ -32,8 +33,9 @@ export const GET_ME = gql`
       }
       contractor {
         _id
-        firstName
-        lastName
+        ownerName
+        businessName
+        userNumber
         email
         username
         employees {
@@ -46,8 +48,9 @@ export const GET_ME = gql`
         contractorPost {
           _id
           description
-          contractorNumber
-          contractorName
+          userNumber
+          businessName
+          img
         }
         contractorPostCount
       }
@@ -64,6 +67,7 @@ export const GET_CUSTOMER_ID = gql`
         email
         firstName
         lastName
+        userNumber
       }
     }
   }
@@ -74,8 +78,9 @@ export const GET_CONTRACTOR_ID = gql`
     userContractor(id: $userId) {
       contractor {
         _id
-        firstName
-        lastName
+        ownerName
+        businessName
+        userNumber
         username
         email
       }
@@ -88,8 +93,9 @@ query getContractractorPosts {
   contractorPosts {
     _id
     description
-    contractorNumber
-    contractorName
+    userNumber
+    businessName
+    img
   }
 }
 `;
@@ -101,7 +107,8 @@ export const GET_CUSTOMER_POSTS = gql`
       budget
       firstName
       lastName
-      customerNumber
+      userNumber
+      img
     }
   }
 `;
@@ -110,8 +117,9 @@ query getSingleContractorPost($contractorPostId: ID!) {
   contractorPost(contractorPostId: $contractorPostId) {
     _id
     description
-    image
-    contractorName
+    img
+    businessName
+    userNumber
   }
 }
 `;
@@ -120,8 +128,11 @@ export const GET_SINGLE_CUSTOMER_POSTS = gql`
     customerPost(customerPostId: $customerPostId) {
       _id
       description
-      image
+      img
       budget
+      userNumber
+      firstName
+      lastName
     }
   }
 `;
