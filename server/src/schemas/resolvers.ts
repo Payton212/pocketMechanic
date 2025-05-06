@@ -27,6 +27,7 @@ interface CustomerArgs {
     firstName: string;
     lastName: string;
     userNumber: string;
+    profileImg: string;
   };
 }
 interface ContractorArgs {
@@ -36,6 +37,7 @@ interface ContractorArgs {
     ownerName: string;
     businessName: string;
     userNumber: string;
+    profileImg: string;
   };
 }
 interface CustomerPostId {
@@ -69,7 +71,7 @@ interface ContractorPostArgs {
 interface EmployeeArgs {
   contractorId: string;
   input: {
-    image: string;
+    profileImg: string;
     firstName: string;
     lastName: string;
     description: string;
@@ -90,6 +92,26 @@ interface CarArgs {
 interface CarId {
   _id: string;
   customerId: string;
+}
+interface updateCustomerProfileArgs {
+  customerId: string;
+  input: {
+    customerId: string;
+    firstName: string;
+    lastName: string;
+    userNumber: string;
+    profileImg: string;
+  };
+}
+interface updateContractorProfileArgs {
+  contractorId: string;
+  input: {
+    contractorId: string;
+    ownerName: string;
+    businessName: string;
+    userNumber: string;
+    profileImg: string;
+  }
 }
 const resolvers = {
   Query: {
@@ -121,6 +143,20 @@ const resolvers = {
       } else {
         throw new AuthenticationError("could not authenticate User.");
       }
+    },
+    customerProfile: async (_parent: any, { username }: any) => {
+        const user = await Customer.findOne({ username }).populate([
+          { path: "car" },
+          { path: "customerPost" },
+        ]);
+        return user;
+    },
+    contractorProfile: async (_parent: any, { username }: any) => {
+      const user = await Contractor.findOne({ username }).populate([
+        { path: "employees" },
+        { path: "contractorPost" },
+    ]);
+        return user;
     },
     userContractor: async (_parent: any, { id }: any, context: any) => {
       if (context.user) {
@@ -271,7 +307,7 @@ const resolvers = {
       if (user) {
         await Customer.findOneAndUpdate(
           { _id: customerId },
-          { $pull: { customerPost: _id } },
+          { $pull: { customerPost: _id } }
         );
         const deletedCustomerPost = await CustomerPost.findByIdAndDelete(_id);
         return deletedCustomerPost;
@@ -350,6 +386,40 @@ const resolvers = {
       }
       throw new AuthenticationError("you need to be logged in");
     },
+    updateCustomerProfile: async(
+      _parent: any,
+      { input }: { input: updateCustomerProfileArgs },
+       context: any,
+    ) => {
+      const user = context.user;
+      if (user) {
+        const { customerId, ...editedProfile } = input;
+        const updatedProfile = await Customer.findByIdAndUpdate(
+          { _id: customerId },
+          { $set: editedProfile },
+          { new: true }
+        );
+        return updatedProfile;
+      }
+      throw new AuthenticationError("you need to be logged in");
+    },
+    updateContractorProfile: async(
+      _parent: any,
+      { input }: { input: updateContractorProfileArgs },
+      context: any,
+    ) => {
+      const user = context.user;
+      if (user) {
+        const { contractorId, ...editedProfile } = input;
+        const updatedProfile = await Contractor.findByIdAndUpdate(
+          { _id: contractorId },
+          { $set: editedProfile },
+          { new: true }
+        );
+        return updatedProfile;
+      }
+      throw new AuthenticationError("you need to be logged in");
+    }
   },
 };
 

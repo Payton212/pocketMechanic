@@ -49,28 +49,30 @@ addCustomer(input: $input) {
 }
 `
 export const ADD_CONTRACTOR_POST = gql`
-mutation addContractorPost($input: addContractorPost!) {
-  addContractorPost(input: $input) {
-  _id
-  username
-  email
-    contractor{
-      contractorPost {
-        description
-        userNumber
-        businessName
-        img
-      }
+  mutation addContractorPost($input: addContractorPost!) {
+    addContractorPost(input: $input) {
+      _id
+      username
+      email
+      contractor {
+        contractorPost {
+          username
+          description
+          userNumber
+          businessName
+          img
+        }
         ownerName
         businessName
         userNumber
         username
         email
+        profileImg
         contractorPostCount
+      }
     }
   }
-}
-`
+`;
 export const ADD_CUSTOMER_POST = gql`
   mutation addCustomerPost($input: addCustomerPost!) {
     addCustomerPost(input: $input) {
@@ -80,6 +82,7 @@ export const ADD_CUSTOMER_POST = gql`
       customer {
         customerPost {
           description
+          username
           img
           firstName
           lastName
@@ -91,6 +94,7 @@ export const ADD_CUSTOMER_POST = gql`
         firstName
         lastName
         userNumber
+        profileImg
         customerPostCount
       }
     }
@@ -104,7 +108,7 @@ mutation addEmployee($input: addEmployee!) {
     email
     contractor {
       employees {
-        image
+        profileImg
         firstName
         lastName
         description
@@ -137,6 +141,7 @@ export const DELETE_CONTRACTOR_POST = gql`
       _id
       contractorPost {
         _id
+        img
         description
         userNumber
         businessName
@@ -166,7 +171,7 @@ export const DELETE_EMPLOYEE = gql`
       _id
       employees {
         _id
-        image
+        profileImg
         firstName
         lastName
         description
@@ -184,6 +189,28 @@ export const DELETE_CAR = gql`
         carMake
         carModel
       }
+    }
+  }
+`;
+export const UPDATE_CUSTOMER_PROFILE = gql`
+  mutation UpdateCustomerProfile($input: UpdateCustomerProfile!) {
+    updateCustomerProfile(input: $input) {
+      _id
+      firstName
+      lastName
+      userNumber
+      profileImg
+    }
+  }
+`;
+export const UPDATE_CONTRACTOR_PROFILE = gql`
+  mutation UpdateContractorProfile($input: UpdateContractorProfile!) {
+    updateContractorProfile(input: $input) {
+      _id
+      businessName
+      ownerName
+      userNumber
+      profileImg
     }
   }
 `;

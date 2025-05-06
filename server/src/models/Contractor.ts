@@ -13,6 +13,7 @@ interface ContractorDocument extends Document {
   contractorPost: ContractorPostDocument[];
   userNumber: string;
   contractorPostCount: number;
+  profileImg: string;
 }
 
 const contractorSchema = new Schema<ContractorDocument>({
@@ -49,6 +50,7 @@ const contractorSchema = new Schema<ContractorDocument>({
     required: true,
     match: [/.+@.+\..+/, "Must use a valid email address"],
   },
+  profileImg: String,
 });
 
 contractorSchema.virtual('contractorPostCount').get(function () {

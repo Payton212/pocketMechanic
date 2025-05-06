@@ -11,6 +11,7 @@ import Auth from "../utils/auth";
 const addEmployeeForm = () => {
     const { userId } = useParams();
   const [addEmployeeState, setEmployee] = useState({
+    profileImg:"",
     firstName: "",
     lastName: "",
     description: "",
@@ -31,6 +32,27 @@ const addEmployeeForm = () => {
     setEmployee({
       ...addEmployeeState,
       [name]: value,
+    });
+  };
+  const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
+    if (!event.target.files) return;
+    const file = event.target.files[0];
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "pocket-Mechanic");
+    data.append("cloud_name", "dvxgfmiiu");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dvxgfmiiu/image/upload",
+      {
+        method: "POST",
+        body: data,
+      }
+    );
+    const uploadedImage = await res.json();
+    setEmployee({
+      ...addEmployeeState,
+      profileImg: uploadedImage.url,
     });
   };
   const handleFormSubmit = async (event: FormEvent) => {
@@ -67,6 +89,11 @@ const addEmployeeForm = () => {
               </p>
             ) : (
               <form onSubmit={handleFormSubmit}>
+                <input
+                  className="form-input"
+                  type="file"
+                  onChange={handleFileUpload}
+                />
                 <input
                   className="form-input"
                   placeholder="what make is your employee's first name"

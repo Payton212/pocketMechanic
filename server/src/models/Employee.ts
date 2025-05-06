@@ -2,7 +2,7 @@ import { Schema, model, type Document } from "mongoose";
 
 interface EmployeeDocument extends Document {
   _id: String;
-  image: String;
+  profileImg: String;
   firstName: String;
   lastName: String;
   description: String;
@@ -21,7 +21,7 @@ const employeeSchema = new Schema<EmployeeDocument>({
         type: String,
         required: true,
     },
-    image: String,
+    profileImg: String,
 });
 const Employee = model("Employee", employeeSchema);
 export { type EmployeeDocument, employeeSchema };

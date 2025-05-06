@@ -13,6 +13,7 @@ interface CustomerDocument extends Document {
   customerPost: CustomerPostDocument[];
   customerPostCount: Number;
   userNumber: string;
+  profileImg: String;
   // favoriteContractor: ContractorId;
 }
 const customerSchema = new Schema<CustomerDocument>({
@@ -47,6 +48,7 @@ const customerSchema = new Schema<CustomerDocument>({
     type: String,
     required: true,
   },
+  profileImg: String,
 });
 
 customerSchema.virtual('customerPostCount').get(function () {

@@ -1,4 +1,4 @@
-import { Navigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
 import ContractorPostList from "../components/ContractorPosts/index.js";
@@ -14,9 +14,7 @@ import Auth from '../utils/auth';
 const Profile = () => {
   const { username: userParam } = useParams();
   const { loading, data } = useQuery(GET_ME);
-
   const user = data?.me || {};
-  console.log(user)
   if (
     userParam &&
     Auth.loggedIn() &&
@@ -44,20 +42,30 @@ const Profile = () => {
           <div>Loading...</div>
         ) : (
           <div>
-            <div className="employeeBox">
-              <h3>My Employee's</h3>
-              <EmployeeList
-                employees={user.contractor.employees || []}
-                contractorId={user.contractor._id || {}}
-              />
+            <div>
+              <Link to="/editContractorProfile">
+                <h1 className="m-0">Edit Profile</h1>
+              </Link>
             </div>
-
+            <div className="profilePicBox">
+              <div>
+                <h1>Profile Pic</h1>
+                <img className="profilePic" src={user.contractor.profileImg} />
+              </div>
+              <div className="employeeBox">
+                <h3>My Employee's</h3>
+                <EmployeeList
+                  employees={user.contractor.employees || []}
+                  contractorId={user.contractor._id || {}}
+                />
+              </div>
+            </div>
             <div className="Lists">
               <h1>My Posts</h1>
               <div>
                 <ContractorPostList
-                  contractorPosts={user.contractor.contractorPost|| []}
-                  contractorId={user.contractor._id|| {}}
+                  contractorPosts={user.contractor.contractorPost || []}
+                  contractorId={user.contractor._id || {}}
                 />
               </div>
             </div>
@@ -68,16 +76,21 @@ const Profile = () => {
   } else {
     return (
       <>
-        {loading  ? (
+        {loading ? (
           <div>Loading...</div>
         ) : (
           <div>
+            <div>
+              <Link to="/editCustomerProfile">
+                <h1 className="m-0">Edit Profile</h1>
+              </Link>
+            </div>
             <div className="carBox">
               <h3>My Cars's</h3>
               <CarList
-                cars={user.customer.car|| []}
+                cars={user.customer.car || []}
                 title="Cars"
-                customerId={user.customer._id|| {}}
+                customerId={user.customer._id || {}}
               />
             </div>
 
@@ -85,9 +98,9 @@ const Profile = () => {
               <h1>My Posts</h1>
               <div>
                 <CustomerPostList
-                  customerPosts={user.customer.customerPost|| []}
+                  customerPosts={user.customer.customerPost || []}
                   title="My"
-                  customerId={user.customer._id|| {}}
+                  customerId={user.customer._id || {}}
                 />
               </div>
             </div>

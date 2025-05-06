@@ -53,7 +53,7 @@ const Signup = () => {
             email: formState.email,
             username: formState.username,
             password: formState.password,
-            isContractor: formState.isContractor,
+            isContractor: isChecked,
           },
         },
       });
@@ -98,7 +98,6 @@ const Signup = () => {
       console.error(e);
     }
   };
-
   return (
     <main className="flex-row justify-center mb-4">
       <div className="col-12 col-lg-10">

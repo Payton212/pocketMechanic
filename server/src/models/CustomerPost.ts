@@ -2,15 +2,20 @@ import { Schema, model, type Document } from "mongoose";
 
 interface CustomerPostDocument extends Document {
   description: String;
-    budget: String;
-    firstName: String;
-    lastName: String;
-    userNumber: String;
-    img: String;
+  username: String;
+  budget: String;
+  firstName: String;
+  lastName: String;
+  userNumber: String;
+  img: String;
 }
 
 const customerPostSchema = new Schema<CustomerPostDocument>({
   description: {
+    type: String,
+    required: true,
+  },
+  username: {
     type: String,
     required: true,
   },

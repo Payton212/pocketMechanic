@@ -16,7 +16,8 @@ const addContractorPostForm = () => {
       variables: { userId },
     }
   );
-    const [ContractorPostForm, setContractorPost] = useState({
+  const [ContractorPostForm, setContractorPost] = useState({
+      username: "",
       description: "",
       userNumber: "",
       businessName: "",
@@ -53,6 +54,7 @@ const addContractorPostForm = () => {
         [name]: value,
         businessName: contractorData.userContractor.contractor.businessName,
         userNumber: contractorData.userContractor.contractor.userNumber,
+        username: contractorData.userContractor.contractor.username,
       });
     };
 

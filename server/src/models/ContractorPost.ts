@@ -2,6 +2,7 @@ import { Schema, model, type Document } from "mongoose";
 
 interface ContractorPostDocument extends Document {
   _id: String;
+  username: String;
   description: String;
   img: String;
   businessName: String;
@@ -10,6 +11,10 @@ interface ContractorPostDocument extends Document {
 
 const contractorPostSchema = new Schema<ContractorPostDocument>({
   description: {
+    type: String,
+    required: true,
+  },
+  username: {
     type: String,
     required: true,
   },

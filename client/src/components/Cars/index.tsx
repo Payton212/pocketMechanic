@@ -51,8 +51,8 @@ const CarList: React.FC<CarProps> = ({ cars, title, customerId }) => {
     );
   } else {
     return (
-      <div>
-        <h3>{title}</h3>
+      <div className="carBox">
+        <h3 className="carTitle">{title}</h3>
         {cars &&
           cars.map((car) => (
             <div key={car._id} className="carCard cardBody">

@@ -12,6 +12,7 @@ const addCustomerPostForm = () => {
   const { userId } = useParams();
   const [CustomerPostForm, setCustomerPost] = useState({
     description: "",
+    username:"",
     budget: "",
     firstName: "",
     lastName: "",
@@ -47,6 +48,7 @@ const addCustomerPostForm = () => {
     setCustomerPost({
       ...CustomerPostForm,
       [name]: value,
+      username: customerData.userCustomer.customer.username,
       userNumber: customerData.userCustomer.customer.userNumber,
       firstName: customerData.userCustomer.customer.firstName,
       lastName: customerData.userCustomer.customer.lastName,

@@ -2,7 +2,7 @@ import { DELETE_EMPLOYEE } from "../../utils/mutations";
 import { useMutation } from "@apollo/client";
 interface Employee {
     _id: string;
-    image: string;
+    profileImg: string;
     firstName: string;
     lastName: string;
     description: string;
@@ -32,26 +32,35 @@ const EmployeeList: React.FC<EmployeeListProps> = ({ employees, contractorId }) 
   };
     if (contractorId) {
          return (
-      <div className="employeeLists">
-        {employees &&
-          employees.map((employee) => (
-            <div key={employee._id} className="employeeCard cardBody">
-              <h1>
-                {employee.firstName} {employee.lastName}
-              </h1>
-              {employee.image ? <img src={employee.image} /> : null}
-              <div className="employeeDescriptionBox">
-                                  <p>{employee.description}</p>
-              </div>
+           <div className="employeeLists">
+             {employees &&
+               employees.map((employee) => (
+                 <div key={employee._id} className="employeeCard cardBody">
+                   <h1>
+                     {employee.firstName} {employee.lastName}
+                   </h1>
+                   <div className="employeeProfilePicBox">
+                     {employee.profileImg ? (
+                       <img
+                         src={employee.profileImg}
+                         className="employeeProfilePic"
+                       />
+                     ) : null}
+                   </div>
+                   <div className="employeeDescriptionBox">
+                     <p>{employee.description}</p>
+                   </div>
 
-                  <button
-                      className="deleteButton"
-                      onClick={() => deleteEmployee(employee._id, contractorId)}
-                  >remove</button>
-            </div>
-          ))}
-      </div>
-    );
+                   <button
+                     className="deleteButton"
+                     onClick={() => deleteEmployee(employee._id, contractorId)}
+                   >
+                     remove
+                   </button>
+                 </div>
+               ))}
+           </div>
+         );
     } else {
         return (
             <div>
@@ -61,7 +70,13 @@ const EmployeeList: React.FC<EmployeeListProps> = ({ employees, contractorId }) 
                 <h1>
                   {employee.firstName} {employee.lastName}
                 </h1>
-                {employee.image ? <img src={employee.image} /> : null}
+                <div className="employeeProfilePicBox">
+                  {employee.profileImg ? <img
+                    src={employee.profileImg}
+                    className="employeeProfilePic"
+                  /> : null}
+                </div>
+                
                 <p>{employee.description}</p>
               </div>
             ))}

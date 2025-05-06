@@ -1,7 +1,9 @@
 import { DELETE_CUSTOMER_POST } from "../../utils/mutations";
+import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 interface CustomerPost {
   _id: string;
+  username: string;
   img: string;
   description: string;
   firstName: string;
@@ -17,6 +19,10 @@ interface CustomerPostListProps {
 
 const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, title, customerId, }) => {
   const [deleteCustomerPost] = useMutation(DELETE_CUSTOMER_POST);
+  const customerProfile = async (username: string) => {
+  
+}
+
   if (!customerPosts.length) {
     return <h3>No customerPosts</h3>;
   }
@@ -76,10 +82,22 @@ const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, titl
       <div className="myPosts">
         {customerPosts &&
           customerPosts.map((customerPost) => (
-            <div key={customerPost._id} className="CustomerPostCard cardBody">
-              <h1 id="customerName">
-                {customerPost.firstName} {customerPost.lastName}
-              </h1>
+            <div
+              key={customerPost._id}
+              className="CustomerPostCard cardBody"
+              onClick={() => customerProfile(customerPost.username)}
+            >
+              <div className="imgBox">
+                <Link
+                id="customerName"
+                to={`customerProfile/${customerPost.username}`}
+                >{customerPost.username}
+                </Link>
+                {customerPost.img ? (
+                  <img id="customerImg" src={customerPost.img} />
+                ) : null}
+              </div>
+              
               <div className="budgetBox">
                 <div className="customerBudget">
                   <h1 id="customerBudget">Budget:</h1>
@@ -89,17 +107,12 @@ const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, titl
                   <h1 id="contractorContact">Contact: </h1>
                   <p id="contractorNumber">{customerPost.userNumber}</p>
                 </div>
-              </div>
-              <div className="imgBox">
-              {customerPost.img ? (
-                <img
-                  id="customerImg"
-                  src={customerPost.img} />
-              ) : null}
-              </div>
-              <div className="customerDescriptionCard">
+                <div className="customerDescriptionCard">
                 <p>{customerPost.description}</p>
               </div>
+              </div>
+             
+              
             </div>
           ))}
       </div>
