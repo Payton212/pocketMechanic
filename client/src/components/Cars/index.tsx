@@ -39,12 +39,14 @@ const CarList: React.FC<CarProps> = ({ cars, title, customerId }) => {
               <h1>
                 {car.carYear} {car.carMake} {car.carModel}
               </h1>
-              <button
-                className="deleteButton"
-                onClick={() => deleteCar(car._id, customerId)}
-              >
-                remove
-              </button>
+              <div className="deleteButton">
+                <button
+                  id="deleteButton"
+                  onClick={() => deleteCar(car._id, customerId)}
+                >
+                  remove
+                </button>
+              </div>
             </div>
           ))}
       </div>

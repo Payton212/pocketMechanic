@@ -50,10 +50,10 @@ const addEmployeeForm = () => {
       }
     );
     const uploadedImage = await res.json();
-    setEmployee({
-      ...addEmployeeState,
+    setEmployee((prevState) => ({
+      ...prevState,
       profileImg: uploadedImage.url,
-    });
+    }));
   };
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();

@@ -45,9 +45,17 @@ const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, titl
         {customerPosts &&
           customerPosts.map((customerPost) => (
             <div key={customerPost._id} className="CustomerPostCard cardBody">
-              <h1 id="customerName">
-                {customerPost.firstName} {customerPost.lastName}
-              </h1>
+              <div className="imgBox">
+                <h1
+                  id="customerName"
+                >
+                  {customerPost.username}
+                </h1>
+                {customerPost.img ? (
+                  <img id="customerImg" src={customerPost.img} />
+                ) : null}
+              </div>
+
               <div className="budgetBox">
                 <div className="customerBudget">
                   <h1 id="customerBudget">Budget:</h1>
@@ -57,22 +65,18 @@ const CustomerPostList: React.FC<CustomerPostListProps> = ({ customerPosts, titl
                   <h1 id="contractorContact">Contact: </h1>
                   <p id="contractorNumber">{customerPost.userNumber}</p>
                 </div>
+                <div className="customerDescriptionCard">
+                  <p>{customerPost.description}</p>
+                </div>
               </div>
-              <div className="imgBox">
-              {customerPost.img ?
-                <img
-                  id="customerImg"
-                  src={customerPost.img} /> : null}
-             </div>
-              <div className="customerDescriptionCard">
-                <p>{customerPost.description}</p>
-              </div>
+              <div className="deleteButton">
               <button
-                className="deleteButton"
+                id="deleteButton"
                 onClick={() => deletePost(customerPost._id, customerId)}
               >
                 remove
-              </button>
+                </button>
+              </div>
             </div>
           ))}
       </div>

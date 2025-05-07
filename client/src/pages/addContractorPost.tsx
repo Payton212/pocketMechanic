@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, type FormEvent, type ChangeEvent } from "react";
+import { useState, useEffect, type FormEvent, type ChangeEvent } from "react";
 import { Link } from "react-router-dom";
 
 import { useMutation, useQuery } from "@apollo/client";
@@ -17,12 +17,12 @@ const addContractorPostForm = () => {
     }
   );
   const [ContractorPostForm, setContractorPost] = useState({
-      username: "",
-      description: "",
-      userNumber: "",
-      businessName: "",
-      img:"",
-    });
+    username: "",
+    description: "",
+    userNumber: "",
+    businessName: "",
+    img: "",
+  });
   const [addContractorPost, { error, data }] = useMutation(ADD_CONTRACTOR_POST);
   const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -40,90 +40,95 @@ const addContractorPostForm = () => {
       }
     );
     const uploadedImage = await res.json();
+    setContractorPost((prevState) => ({
+      ...prevState,
+      img: uploadedImage.url,
+    }));
+  };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+
     setContractorPost({
       ...ContractorPostForm,
-      img: uploadedImage.url,
+      [name]: value,
+      businessName: contractorData.userContractor.contractor.businessName,
+      userNumber: contractorData.userContractor.contractor.userNumber,
+      username: contractorData.userContractor.contractor.username,
     });
   };
-  
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = event.target;
 
-      setContractorPost({
-        ...ContractorPostForm,
-        [name]: value,
-        businessName: contractorData.userContractor.contractor.businessName,
-        userNumber: contractorData.userContractor.contractor.userNumber,
-        username: contractorData.userContractor.contractor.username,
-      });
-    };
-
-    const handleFormSubmit = async (event: FormEvent) => {
-      event.preventDefault();
-      const token = Auth.loggedIn() ? Auth.getToken() : null;
-      console.log(contractorData)
-      if (contractorData && contractorData.userContractor && contractorData.userContractor.contractor && !contractorLoading) {
-        const contractorId = contractorData.userContractor.contractor._id;
-        if (!token) {
-          return false;
-        }
-        try {
-          await addContractorPost({
-            variables: { input: { ...ContractorPostForm, contractorId } },
-          });
-        } catch (err) {
-          console.error(err);
-        }
-      } else {
-        console.error("Contractor data is not available");
+  const handleFormSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    const token = Auth.loggedIn() ? Auth.getToken() : null;
+    console.log(contractorData);
+    if (
+      contractorData &&
+      contractorData.userContractor &&
+      contractorData.userContractor.contractor &&
+      !contractorLoading
+    ) {
+      const contractorId = contractorData.userContractor.contractor._id;
+      if (!token) {
+        return false;
       }
-    };
+      try {
+        await addContractorPost({
+          variables: { input: { ...ContractorPostForm, contractorId } },
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      console.error("Contractor data is not available");
+    }
+  };
 
-    return (
-      <main>
+  return (
+    <main>
+      <div>
         <div>
+          <h4> add a post</h4>
           <div>
-            <h4> add a post</h4>
-            <div>
-              {data ? (
-                <p>
-                  Success! You may now head{" "}
-                  <Link to="/">back to the homepage.</Link>
-                </p>
-              ) : (
-                <form onSubmit={handleFormSubmit}>
-                    <input
-                      className="form-input"
-                      type="file"
-                        onChange={handleFileUpload}
-                    />
-                  <input
-                    className="form-input"
-                    placeholder="tell me about your business"
-                    type="description"
-                    name="description"
-                    value={ContractorPostForm.description}
-                    onChange={handleChange}
-                  />
-                  <button
-                    className="btn btn-block btn-primary"
-                    style={{ cursor: "pointer" }}
-                    type="submit"
-                  >
-                    Submit
-                  </button>
-                </form>
-              )}
-              {error && (
-                <div className="my-3 p-3 bg-danger text-white">
-                  {error.message}
-                </div>
-              )}
-            </div>
+            {data ? (
+              <p>
+                Success! You may now head{" "}
+                <Link to="/">back to the homepage.</Link>
+              </p>
+            ) : (
+              <form onSubmit={handleFormSubmit}>
+                <input
+                  className="form-input"
+                  type="file"
+                  onChange={handleFileUpload}
+                />
+                <input
+                  className="form-input"
+                  placeholder="tell me about your business"
+                  type="description"
+                  name="description"
+                  value={ContractorPostForm.description}
+                  onChange={handleChange}
+                />
+                <button
+                  className="btn btn-block btn-primary"
+                  style={{ cursor: "pointer" }}
+                  type="submit"
+                >
+                  Submit
+                </button>
+              </form>
+            )}
+            {error && (
+              <div className="my-3 p-3 bg-danger text-white">
+                {error.message}
+              </div>
+            )}
           </div>
         </div>
-      </main>
-    );
+      </div>
+    </main>
+  );
 };
 
 export default addContractorPostForm;

@@ -42,18 +42,12 @@ const Profile = () => {
           <div>Loading...</div>
         ) : (
           <div>
-            <div>
-              <Link to="/editContractorProfile">
-                <h1 className="m-0">Edit Profile</h1>
-              </Link>
-            </div>
             <div className="profilePicBox">
               <div>
                 <h1>Profile Pic</h1>
                 <img className="profilePic" src={user.contractor.profileImg} />
               </div>
               <div className="employeeBox">
-                <h3>My Employee's</h3>
                 <EmployeeList
                   employees={user.contractor.employees || []}
                   contractorId={user.contractor._id || {}}
@@ -80,20 +74,20 @@ const Profile = () => {
           <div>Loading...</div>
         ) : (
           <div>
-            <div>
-              <Link to="/editCustomerProfile">
-                <h1 className="m-0">Edit Profile</h1>
-              </Link>
+            <div className="profilePicBox">
+              <div>
+                <h1>Profile Pic</h1>
+                <img className="profilePic" src={user.customer.profileImg} />
+              </div>
+              <div className="carBox">
+                <h3>My Cars's</h3>
+                <CarList
+                  cars={user.customer.car || []}
+                  title="Cars"
+                  customerId={user.customer._id || {}}
+                />
+              </div>
             </div>
-            <div className="carBox">
-              <h3>My Cars's</h3>
-              <CarList
-                cars={user.customer.car || []}
-                title="Cars"
-                customerId={user.customer._id || {}}
-              />
-            </div>
-
             <div className="Lists">
               <h1>My Posts</h1>
               <div>

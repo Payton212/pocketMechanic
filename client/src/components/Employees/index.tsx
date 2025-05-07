@@ -50,13 +50,14 @@ const EmployeeList: React.FC<EmployeeListProps> = ({ employees, contractorId }) 
                    <div className="employeeDescriptionBox">
                      <p>{employee.description}</p>
                    </div>
-
-                   <button
-                     className="deleteButton"
-                     onClick={() => deleteEmployee(employee._id, contractorId)}
-                   >
-                     remove
-                   </button>
+                   <div className="deleteButton">
+                     <button
+                       id="deleteButton"
+                       onClick={() => deleteEmployee(employee._id, contractorId)}
+                     >
+                       remove
+                     </button>
+                   </div>
                  </div>
                ))}
            </div>

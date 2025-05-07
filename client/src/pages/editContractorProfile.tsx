@@ -41,10 +41,10 @@ const editContractorProfile = () => {
          }
        );
        const uploadedImage = await res.json();
-       editProfile({
-         ...editedProfile,
+       editProfile((prevState)=> ({
+         ...prevState,
          profileImg: uploadedImage.url,
-       });
+       }));
      };
      const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
        const { name, value } = event.target;

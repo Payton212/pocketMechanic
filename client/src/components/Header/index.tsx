@@ -39,6 +39,11 @@ const Header = () => {
                 >
                   Add Post
                 </Link>
+                <Link
+                  className="btn btn-lg btn-light m-2"
+                  to="/editCustomerProfile">
+                      Edit Profile
+                  </Link>
                 <button className="btn btn-lg btn-light m-2" onClick={logout}>
                   Logout
                 </button>
@@ -92,6 +97,13 @@ const Header = () => {
                 >
                   Add Employee
                 </Link>
+                <Link
+                  className="btn btn-lg btn-light m-2"
+                  to="/editContractorProfile"
+                >
+                  Edit Profile
+                </Link>
+
                 <button className="btn btn-lg btn-light m-2" onClick={logout}>
                   Logout
                 </button>

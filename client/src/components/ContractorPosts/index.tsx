@@ -44,29 +44,34 @@ const ContractorPostList: React.FC<ContractorPostListProps> = ({ contractorPosts
                 key={contractorPost._id}
                 className="ContractorPostCard cardBody"
               >
-                <h1 id="contractorName"
-                > <div className="contactBox">
-                  <h1 id="contractorContact"
-                  >Contact: </h1> <p id="contractorNumber"
-                  >{contractorPost.userNumber}</p>
-                  </div>{contractorPost.businessName}</h1>
                 <div className="imgBox">
-                {contractorPost.img ? (
-                    <img
-                      id="contractorImg"
-                      src={contractorPost.img} />
-                ) : null}
-               </div>
-                <div className="contractorDescriptionCard">
+                  <h1
+                    id="contractorName"
+                  >
+                    {" "}
+                    {contractorPost.businessName}
+                  </h1>
+
+                  {contractorPost.img ? (
+                    <img id="contractorImg" src={contractorPost.img} />
+                  ) : null}
+                </div>
+                <div className="contractorPostBox">
+                  <div className="contactBox">
+                    <h1 id="contractorContact">Contact: </h1>{" "}
+                    <p id="contractorNumber">{contractorPost.userNumber}</p>
+                  </div>
+
                   <p>{contractorPost.description}</p>
                 </div>
-                
-                <button
-                  className="deleteButton"
-                  onClick={() => deletePost(contractorPost._id, contractorId)}
-                >
-                  remove
-                </button>
+                <div className="deleteButton">
+                  <button
+                    id="deleteButton"
+                    onClick={() => deletePost(contractorPost._id, contractorId)}
+                  >
+                    remove
+                  </button>
+                </div>
               </div>
             ))}
         </div>

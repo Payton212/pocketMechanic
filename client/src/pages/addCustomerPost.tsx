@@ -38,10 +38,10 @@ const addCustomerPostForm = () => {
       body: data
     });
     const uploadedImage = await res.json()
-    setCustomerPost({
-      ...CustomerPostForm,
+    setCustomerPost((prevState) => ({
+      ...prevState,
       img: uploadedImage.url,
-    });
+    }));
   }
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

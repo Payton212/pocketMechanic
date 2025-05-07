@@ -1721,6 +1721,7 @@ label form [type="radio"] {
 .employeeBox,
 .carBox {
   display: flex;
+
 }
 .ContractorPostCard,
 .CustomerPostCard {
@@ -1846,4 +1847,24 @@ label form [type="radio"] {
 .employeeProfilePic {
   width: 80%;
   border-radius: 15px;
+}
+.deleteButton {
+  display: flex;
+  align-items: end;
+}
+#deleteButton {
+  height: 30px;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+.editProfile {
+  width: fit-content;
+}
+#editProfile {
+border: solid rgb(91, 83, 83) 2px;
+color: black;
+border-radius: 10px;
+width: fit-content;
+background-color: rgb(252, 250, 250);
+padding: 5px 10px 5px 10px;
 }
