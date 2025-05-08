@@ -27,7 +27,7 @@ const ContractorProfile = () => {
                 <p id="contact">{user.userNumber}</p>
               </div>
             </div>
-            <div>
+            <div className="employeeContainer">
               <h1> Employee's</h1>
               <EmployeeList employees={user.employees || []} />
             </div>
