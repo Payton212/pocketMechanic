@@ -1890,4 +1890,40 @@ padding: 5px 10px 5px 10px;
   .container {
     margin:0 0 0 20px;
   }
+         #profilePicBox {
+           width: 40%;
+         }
+         .profilePicBox {
+            justify-content: center;
+            size: fit-content;
+         }
+    .profilePic {
+      width: 80%;
+      height: 60%;
+      margin-left: 35px;
+    }
+        #contractorUsername,
+        #customerUsername {
+          font-size: 180%;
+        }
+        #customerContactHead,
+        #contractorContactHead {
+          font-size: 130%;
+        }
+        .customerContact {
+          height: 10%;
+        }
+}
+@media ( max-width: 760px) {
+    .profilePicBox {
+        flex-direction: column;
+      }
+      #profilePicBox {
+      width: 100%;
+      height: 60%;
+    }
+    .profilePic {
+      max-height: 500px;
+      border-radius: 220px;
+    }
 }

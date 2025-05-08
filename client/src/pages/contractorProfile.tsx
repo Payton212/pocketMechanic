@@ -19,11 +19,11 @@ const ContractorProfile = () => {
           <div className="profilePicBox">
                           <div id="profilePicBox">
                               <div>
-                              <h1>{user.username}</h1>
+                              <h1 id="contractorUsername">{user.username}</h1>
                               {user.ownerName}</div>
               <img className="profilePic" src={user.profileImg} />
               <div className="customerContact">
-                <h1>Contact: </h1>
+                <h1 id="contractorContactHead">Contact: </h1>
                 <p id="contact">{user.userNumber}</p>
               </div>
             </div>
